@@ -1,0 +1,435 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>vingleo的iPhone开发笔记</title>
+<style type="text/css">
+<!--
+body {
+	background-color: #999999;
+}
+.STYLE2 {
+	font-size: xx-large;
+	font-family: "宋体";
+	font-weight: bold;
+	color: #9900CC;
+}
+-->
+</style></head>
+
+<body>
+<p class="STYLE2">vingleo的iPhone开发笔记（1）</p>
+<p><span lang="en-US">Nib</span><span lang="zh-CN">文件的构成</span><span lang="en-US"> </span><span lang="zh-CN">标为</span><span lang="en-US"> XXXXViewController.xib</span><span lang="zh-CN">的文件打开后最初有</span><span lang="en-US"> File’s  Owner </span><span lang="zh-CN">和</span><span lang="en-US">First Responder</span><span lang="zh-CN">自动创建，</span><span lang="zh-CN"> </span><span lang="zh-CN">不能删除。之外的图标表示</span><span lang="en-US">nib</span><span lang="zh-CN">加载时创建的对象实例。例如</span><span lang="en-US">View  ——</span><span lang="zh-CN">表示</span><span lang="en-US">UIView</span><span lang="zh-CN">类的一个对象。这个类是表示用户能够看到和交互的区域。可以有多个</span><span lang="en-US">UIView</span><span lang="zh-CN">实例。</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>注意用户界面中的对象有层次结构，如果某个对象不支持字视图，就不能拖放</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">Interface Builder</span><span lang="zh-CN">不会创建任何需要维护的代码，其直接创建</span><span lang="en-US">Object-C</span><span lang="zh-CN">对象，序列化到</span><span lang="en-US">nib</span><span lang="zh-CN">文件中，运行时再加载。</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">注意</span><span lang="en-US"> Info.plist</span><span lang="zh-CN">文件中</span><span lang="en-US"> bundle identifier </span><span lang="zh-CN">始终要设置</span></p>
+<ol type="1">
+  <li value="1"><span lang="zh-CN">模拟器上各式为</span><span lang="zh-CN"> </span><span lang="zh-CN">等级</span><span lang="en-US">Internet </span><span lang="zh-CN">域如</span><span lang="en-US">com</span><span lang="zh-CN">或</span><span lang="en-US">org + </span><span lang="zh-CN">句点</span><span lang="en-US"> + </span><span lang="zh-CN">公司或组织名称</span><span lang="en-US"> + </span><span lang="zh-CN">句点</span><span lang="en-US">+ </span><span lang="zh-CN">程序名称</span><span lang="en-US"> </span><span lang="zh-CN">如</span><span lang="en-US"> com.apress.HelloWorld</span></li>
+  <li value="2">实机上束标识符设置</li>
+</ol>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">如何清理仿真器屏幕中的程序</span><span lang="en-US">, </span><span lang="zh-CN">在主目录的</span><span lang="en-US">Library\Application Support\iPhone  Simulator</span><span lang="zh-CN">文件夹</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">MVC </span><span lang="zh-CN">中模型：保存程序的数据类</span><span lang="en-US">——</span><span lang="zh-CN">设计一些</span><span lang="en-US">Object-C</span><span lang="zh-CN">类来保存数据。</span></p>
+<p>视图：窗口、控件和其他交互元素</p>
+<p><span lang="zh-CN">控制器：</span><span lang="zh-CN"> </span><span lang="zh-CN">确定如何处理用户输入的程序逻辑</span><span lang="en-US">——</span><span lang="zh-CN">由创建的类和特定于程序的类组成。可以完全自定义如</span><span lang="en-US"> NSObject</span><span lang="zh-CN">子类，一般是由</span><span lang="en-US">UIKit</span><span lang="zh-CN">框架中已有的通用控制器的子类</span><span lang="en-US"> UIViewController</span><span lang="zh-CN">。</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner </span><span lang="zh-CN">表示从磁盘加载的</span><span lang="en-US">nib</span><span lang="zh-CN">文件的对象。</span></p>
+<p><span lang="en-US">First Responder </span><span lang="zh-CN">当前与用户交互的对象，</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">已创建好基于视图的项目后</span><span lang="zh-CN"> </span><span lang="zh-CN">，会在类目录里创建</span><span lang="en-US">.m </span><span lang="zh-CN">文件和</span><span lang="en-US">.h</span><span lang="zh-CN">文件</span></p>
+<p><span lang="zh-CN">包含一个视图</span><span lang="zh-CN"> </span><span lang="zh-CN">和</span><span lang="zh-CN"> </span><span lang="zh-CN">视图控制器</span><span lang="en-US"> XXXXXViewController</span></p>
+<p><span lang="zh-CN">视图控制器是</span><span lang="en-US"> UIViewController</span><span lang="zh-CN">的子类，</span><span lang="zh-CN"> </span><span lang="zh-CN">是</span><span lang="en-US">UIKit</span><span lang="zh-CN">的一部分</span></p>
+<p><span lang="zh-CN">在视图中的元素（比如</span><span lang="zh-CN"> </span><span lang="zh-CN">两个按钮和一个标签）必须通过特殊的实例变量</span><span lang="en-US">——</span><span lang="zh-CN">输出口</span><span lang="en-US">outlet</span><span lang="zh-CN">来和代码交互</span><span lang="en-US">. </span><span lang="zh-CN">其实是指向</span><span lang="en-US">nib</span><span lang="zh-CN">对象的指针。</span></p>
+<p><span lang="zh-CN">在</span><span lang="en-US">nib</span><span lang="zh-CN">文件中</span><span lang="zh-CN"> </span><span lang="zh-CN">可以触发控制器类中的特殊方法</span><span lang="en-US">——</span><span lang="zh-CN">操作方法</span><span lang="en-US">Action.</span></p>
+<p>因为需要能更改标签的文本，需要设定指向标签的输出口</p>
+<p><span lang="zh-CN">还需要设置按钮按下时触发的动作。</span><span lang="zh-CN"> </span><span lang="zh-CN">创建一个</span><span lang="en-US"> buttonPressed:</span><span lang="zh-CN">的方法</span><span lang="zh-CN"> </span><span lang="zh-CN">来设置哪个标签被按下。</span></p>
+<p><span lang="zh-CN">通过</span><span lang="en-US">Interface Builder</span><span lang="zh-CN">创建标签和按钮。</span></p>
+<p><span lang="zh-CN">通过</span><span lang="en-US">IBoutlet</span><span lang="zh-CN">来声明实例变量。</span><span lang="zh-CN"> </span><span lang="zh-CN">在控制器类头文件中声明</span></p>
+<p lang="en-US">IBOutlet UIButton *myButton;</p>
+<p><span lang="zh-CN">任何需要连接到</span><span lang="en-US">nib</span><span lang="zh-CN">文件中对象的实例变量都需要以</span><span lang="en-US">IBOutlet</span><span lang="zh-CN">开头。</span></p>
+<p><span lang="zh-CN">通过</span><span lang="en-US">IBAction</span><span lang="zh-CN">来声明操作方法</span></p>
+<p><span lang="en-US">-(IBAction)doSomething(id)sender: </span><span lang="zh-CN">必须返回</span><span lang="en-US">IBAction</span><span lang="zh-CN">类型。</span><span lang="zh-CN"> </span><span lang="zh-CN">参数定义为</span><span lang="en-US"> id</span><span lang="zh-CN">，</span><span lang="zh-CN"> </span><span lang="zh-CN">名称为</span><span lang="en-US"> sender </span><span lang="zh-CN">通过</span><span lang="en-US">sender</span><span lang="zh-CN">参数来获得哪个按钮</span></p>
+<p><span lang="zh-CN">如果无需知道哪个空间调用了方法，</span><span lang="zh-CN"> </span><span lang="zh-CN">可以定义无</span><span lang="en-US">sender</span><span lang="zh-CN">参数的操作方法。</span></p>
+<p><span lang="zh-CN">声明了带</span><span lang="en-US">sender</span><span lang="zh-CN">参数的方法，</span><span lang="zh-CN"> </span><span lang="zh-CN">又忽略了</span><span lang="en-US">sender</span><span lang="zh-CN">参数是可以接受的。过去必须声明</span><span lang="en-US">sender</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>输出口和操作要添加到控制器类中，由于不要改按钮， 所以无需相应输出口</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">另外可以多个按钮调用一个方法，</span><span lang="zh-CN"> </span><span lang="zh-CN">也就是一个操作来处理来自多个控件的输入。操作通过</span><span lang="en-US">sender</span><span lang="zh-CN">参数获取按钮名称，使用标签的输出口来将按钮名称嵌入标签文本</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">@interface Button_funViewController : UIViewController {</span></p>
+<p lang="en-US">IBOutlet UILabel *statusText;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property (retain, nonatomic) UILabel *statusText;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)buttonPressed(id)sender;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">关于</span><span lang="en-US">Object-C</span><span lang="zh-CN">的属性</span><span lang="en-US"> </span><span lang="zh-CN">设定一些方法来设置和检索类的实例变量的值</span><span lang="zh-CN"> </span><span lang="zh-CN">。</span><span lang="zh-CN"> </span><span lang="zh-CN">访问方法及修改方法（获取方法及设置方法）</span></p>
+<p>如访问方法</p>
+<p lang="en-US">–(id) foo</p>
+<p lang="en-US">{</p>
+<p lang="en-US">Return foo;</p>
+<p lang="en-US">}</p>
+<p>和修改方法</p>
+<p lang="en-US">-(void)setFoo(id) aFoo</p>
+<p lang="en-US">{</p>
+<p lang="en-US">If(aFoo != foo)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">[aFoo retain];</p>
+<p lang="en-US">[foo release];</p>
+<p lang="en-US">foo = aFoo;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">}</p>
+<p><span lang="zh-CN">属性必须在</span><span lang="en-US">.h </span><span lang="zh-CN">文件中</span><span lang="en-US"> @property</span><span lang="zh-CN">字段声明</span><span lang="zh-CN"> </span><span lang="zh-CN">，</span><span lang="zh-CN"> </span><span lang="zh-CN">在</span><span lang="en-US">. M</span><span lang="zh-CN">文件中</span><span lang="en-US"> @synthesize</span><span lang="zh-CN">中声明。必须要声明底层实例变量，无需定义访问方法或赋值方法</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">@property</span><span lang="zh-CN">后跟的可选属性</span><span lang="zh-CN"> </span><span lang="zh-CN">定义了如何创建访问方法和修改方法</span></p>
+<p><span lang="en-US">retain </span><span lang="zh-CN">表示向分配给此属性的对象发送一个保留信息。确保了底层的实例变量在使用中不会从内存中清除。如果定义属性的是一个对象</span><span lang="zh-CN"> </span><span lang="zh-CN">不是</span><span lang="en-US">int</span><span lang="zh-CN">、</span><span lang="en-US">float</span><span lang="zh-CN">等原始类型属性，</span><span lang="zh-CN"> </span><span lang="zh-CN">就要加</span><span lang="en-US">retain</span><span lang="zh-CN">。</span></p>
+<p><span lang="en-US">nonatomic </span><span lang="zh-CN">更改了访问方法和修改方法的生成方式，使用多线程。大多数只要设置</span><span lang="en-US">nonatomic</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>在使用访问方法时可以使用点表示法。</p>
+<p><span lang="zh-CN">变量</span><span lang="en-US"> = [</span><span lang="zh-CN">对象</span><span lang="en-US"> </span><span lang="zh-CN">访问方法</span><span lang="en-US">];</span></p>
+<p><span lang="zh-CN">变量</span><span lang="en-US"> = </span><span lang="zh-CN">对象</span><span lang="en-US">. </span><span lang="zh-CN">访问方法；</span></p>
+<p>需要在实现文件中添加操作和输出口</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">#import “Button_FunViewController.h”</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation Button_FunViewController</p>
+<p><span lang="en-US">@synthesize statusText; </span><span lang="zh-CN">注意要合成，属性才生效</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(IBAction)buttonPressed:(id)sender </span><span lang="zh-CN">传递到操作方法的参数是调用它的空间或对象。通过查看</span><span lang="en-US">sender</span><span lang="zh-CN">参数来分辨</span></p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">NSString *title = [sender  titleForState:UIControlStateNormal]; sender</span><span lang="zh-CN">获取对象后</span><span lang="zh-CN"> </span><span lang="zh-CN">用此方法取按钮的标题，</span><span lang="en-US"> </span></p>
+<p><span lang="zh-CN">有四种控件状态</span><span lang="en-US"> normal——</span><span lang="zh-CN">处于活动但没使用</span></p>
+<p><span lang="en-US">Highlighted ——</span><span lang="zh-CN">正按住使用</span></p>
+<p><span lang="en-US">disable</span><span lang="en-US">——</span><span lang="zh-CN">未启用且无法使用</span></p>
+<p><span lang="en-US">selected</span><span lang="en-US">——</span><span lang="zh-CN">此控件已选中</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">NSString *newText = [[NSString alloc]  initWithFormat: </span><span lang="zh-CN">创建另一个实例变量来获取按钮标题和描述文字</span></p>
+<p><span lang="en-US">@</span><span lang="zh-CN">”</span><span lang="en-US">%@ button  pressed.</span><span lang="zh-CN">”</span><span lang="en-US">, title];</span></p>
+<p><span lang="en-US">statusText.text = newText; </span><span lang="zh-CN">将获得的文字</span><span lang="zh-CN"> </span><span lang="zh-CN">赋值给标签</span></p>
+<p><span lang="en-US">[newText release]; </span><span lang="zh-CN">释放字符实例变量</span><span lang="zh-CN"> </span><span lang="zh-CN">以避免内存泄漏</span></p>
+<p lang="en-US">}</p>
+<p><span lang="zh-CN">并没有用到简便方法</span><span lang="en-US">(</span><span lang="zh-CN">工厂方法</span><span lang="en-US">) NSString *newText = [NSString  stringWithFormat:@”%@ button pressed.”, title];</span></p>
+<p>这种方法会返回自动释放的对象。不能被释放。必须用在合适的地方， 使用完之后会保留一段时间</p>
+<p lang="en-US">&nbsp;</p>
+<p>注意在 去除分配方法中释放相关输出口</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[statusText release];</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">关于应用程序的委托</span><span lang="zh-CN"> </span><span lang="zh-CN">用来对另外的对象处理特定事件的类。可以预先定义何时为</span><span lang="en-US">UIApplication</span><span lang="zh-CN">处理事情。每个应用程序都只有一个</span><span lang="en-US">UIApplication</span><span lang="zh-CN">实例，负责运行循环处理各种应用程序级别的功能。</span><span lang="zh-CN"> </span><span lang="zh-CN">在特定时间调用特定的委托方法。比如在程序退出时触发代码可以用</span><span lang="en-US">applicationWillTerminate:</span><span lang="zh-CN">方法</span></p>
+<p><span lang="zh-CN">比如</span><span lang="en-US"> Button_FunAppDelegate.h</span></p>
+<p><span lang="zh-CN">注意</span><span lang="en-US">@interface Button_FunAppDelegate : NSObject  &lt;UIApplicationDelegate&gt; {</span></p>
+<p><span lang="zh-CN">表示这个类复合</span><span lang="en-US"> UIApplicationDelegate</span><span lang="zh-CN">协议。</span><span lang="en-US"> </span><span lang="zh-CN">如果要查看文档</span><span lang="en-US"> option + </span><span lang="zh-CN">鼠标双击可以查看</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>查看委托的实现方法</p>
+<p>注意下面的方法在程序完成设置任务，开始与用户交互时触发。</p>
+<p lang="en-US">-(void)applicationDidFinishLauching: (UIApplication *)application {</p>
+<p><span lang="en-US">[window addSubview:viewController.view]; </span><span lang="zh-CN">将视图控制器的视图作为子视图添加到主窗口</span></p>
+<p><span lang="en-US">[window makeKeyAndVisible]; </span><span lang="zh-CN">设置窗口为可见</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[viewController release];</p>
+<p lang="en-US">[window release];</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">Resources</span><span lang="zh-CN">标签中的</span><span lang="en-US"> MainWindow.xib</span><span lang="zh-CN">是让应用程序委托、主窗口和视图控制器实例在运行时创建</span></p>
+<p><span lang="zh-CN">在</span><span lang="en-US">Interface Builder</span><span lang="zh-CN">中打开这个文件后</span><span lang="zh-CN"> </span><span lang="zh-CN">除</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner </span><span lang="zh-CN">和</span><span lang="zh-CN"> </span><span lang="en-US">First Responder</span><span lang="zh-CN">之外的图标表示实例化的对象</span></p>
+<p><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner </span><span lang="zh-CN">是正在编辑的</span><span lang="en-US">nib</span><span lang="zh-CN">的类</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>着重注意 如何连接所有元素</p>
+<p><span lang="zh-CN">第一步：</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">需要连接到控件。</span><span lang="en-US"> UIviewController</span><span lang="zh-CN">的实例先查找</span><span lang="en-US">nib</span><span lang="zh-CN">文件，加载到内存中后成为此</span><span lang="en-US">nib</span><span lang="zh-CN">的所有者。</span></p>
+<p><span lang="zh-CN">将输出口与标签连接起来。</span><span lang="zh-CN"> </span><span lang="zh-CN">按</span><span lang="en-US">Control </span><span lang="zh-CN">键从</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner </span><span lang="zh-CN">拖向</span><span lang="en-US">View</span><span lang="zh-CN">窗口内的标签上选择</span><span lang="en-US">outlet</span></p>
+<p><span lang="zh-CN">第二步：按钮触发操作。可以按住</span><span lang="en-US">Control</span><span lang="zh-CN">键从按钮拖放到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">图标。</span><span lang="en-US">Mac</span><span lang="zh-CN">上控件可与一个操作有关，</span><span lang="zh-CN"> </span><span lang="zh-CN">但</span><span lang="en-US">Cocoa Touch</span><span lang="zh-CN">可以有多个功能。</span></p>
+<p><span lang="zh-CN">最好使用连接检查器。比如选中按钮后找到</span><span lang="en-US">Connection Inspector</span><span lang="zh-CN">看到</span><span lang="en-US">Events</span><span lang="zh-CN">中的不同事件</span></p>
+<p><span lang="zh-CN">比如</span><span lang="en-US">Touch Up Inside </span><span lang="zh-CN">调用</span><span lang="en-US">buttonPressed: </span><span lang="zh-CN">方法</span><span lang="zh-CN"> </span><span lang="zh-CN">。</span><span lang="zh-CN"> </span><span lang="zh-CN">就直接从原点连到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">上，选择</span><span lang="en-US">buttonPressed:</span><span lang="zh-CN">方法</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>定制用户界面</p>
+<p>定制若干控件， 检索控件中的值，强制用户作出选择并警告等功能</p>
+<p>还是用一个视图配合一个控制器</p>
+<ol type="1">
+  <li value="1">添加一个图像控件</li>
+  <li value="2">两个文本字段，一个允许输入字母和数字，一个允许数字</li>
+  <li value="3"><span lang="zh-CN">滑块控件</span><span lang="en-US">+</span><span lang="zh-CN">标签显示值</span></li>
+  <li value="4"><span lang="zh-CN">分段控件</span><span lang="en-US">+</span><span lang="zh-CN">两个开关</span><span lang="zh-CN"> </span><span lang="zh-CN">分段控制</span><span lang="en-US">Show</span><span lang="zh-CN">或</span><span lang="en-US">Hide</span><span lang="zh-CN">，更改任意开关值另一个会一起改</span></li>
+  <li value="5">一个按钮，弹出警告操作表</li>
+</ol>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">控件有三种形式</span><span lang="en-US">——</span><span lang="zh-CN">活动（按钮</span><span lang="zh-CN"> </span><span lang="zh-CN">触发代码）、静态（标签、图像通过代码修改）、被动（存储数据，可以不触发操作例如文本字段）</span></p>
+<p><span lang="zh-CN">控件有多种操作：</span><span lang="en-US">1</span><span lang="zh-CN">）触碰、滑动、按下、离开按钮操作。</span><span lang="zh-CN"> </span><span lang="zh-CN">单个控件触发两个</span><span lang="en-US">Touch Up  Inside </span><span lang="zh-CN">手指离开时调用两个方法</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">例子</span><span lang="zh-CN"> </span><span lang="zh-CN">创建一个</span><span lang="en-US">Control Fun</span><span lang="zh-CN">的</span><span lang="en-US"> View-Based Application</span><span lang="zh-CN">项目</span></p>
+<p><span lang="zh-CN">如何导入图像</span><span lang="en-US">——</span><span lang="zh-CN">建议使用</span><span lang="en-US">.png</span><span lang="zh-CN">图像</span><span lang="zh-CN"> </span><span lang="zh-CN">添加到</span><span lang="en-US">Resources</span><span lang="zh-CN">文件夹。从</span><span lang="en-US">Project</span><span lang="en-US">——</span><span lang="en-US">Add to  Project</span><span lang="zh-CN">添加图片</span></p>
+<p><span lang="zh-CN">一般在使用</span><span lang="en-US">Interface Builder </span><span lang="zh-CN">设计前需要确定</span><span lang="zh-CN"> </span><span lang="zh-CN">输出口。</span><span lang="en-US"> </span><span lang="zh-CN">在控制器类的头文件中定义。</span></p>
+<p>比如图像视图不需要随运行时修改就不要输出口。标签页一样，不需要交互和变化。文本则需要定义输出口。</p>
+<p><span lang="zh-CN">修改</span><span lang="en-US">Control_funViewController.h </span><span lang="zh-CN">类</span><span lang="zh-CN"> </span><span lang="zh-CN">添加</span><span lang="zh-CN"> </span><span lang="zh-CN">输出口</span><span lang="zh-CN"> </span><span lang="zh-CN">和</span><span lang="zh-CN"> </span><span lang="zh-CN">属性来提供访问方法和设置方法</span></p>
+<p lang="en-US">#import &lt;UIKit/UIKit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface Control_FunViewController : UIViewController {</p>
+<p lang="en-US">IBOutlet??????? UITextField  *nameField;</p>
+<p lang="en-US">IBOutlet??????? UITextField  *numberField;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property (nonatomic, retain) UITextField *nameField;</p>
+<p lang="en-US">@property (nonatomic, retain) UITextFiedl *numberField;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">注意</span><span lang="zh-CN">要在</span><span lang="en-US">Control_FunViewController.m</span><span lang="zh-CN">中添加</span><span lang="en-US"> @synthesize </span><span lang="zh-CN">指令</span></p>
+<p><span lang="en-US">#import </span><span lang="zh-CN">“</span><span lang="en-US">Control_FunViewController.h</span><span lang="zh-CN">”</span></p>
+<p lang="en-US">@implementation Control_FunViewController</p>
+<p><span lang="en-US">@sysnthesize??? nameField; </span><span lang="zh-CN">注意这里不是指针</span></p>
+<p lang="en-US">@sysnthesize??? numberField;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">限制输入文本类型可以通过</span><span lang="en-US">Interface Builder</span><span lang="zh-CN">中设置，不需要指定操作</span></p>
+<p><span lang="zh-CN">在</span><span lang="en-US">Groups &amp; Files</span><span lang="zh-CN">中</span><span lang="en-US">Resources</span><span lang="zh-CN">中打开</span><span lang="en-US">Control_FunViewController.xib </span><span lang="zh-CN">确保</span><span lang="en-US">View</span><span lang="zh-CN">打开并在库中添加一个</span><span lang="en-US">Image View</span><span lang="zh-CN">的实例</span></p>
+<p><span lang="zh-CN">注意</span><span lang="zh-CN">如果对象在另一个后面，可以点击</span><span lang="en-US">nib</span><span lang="zh-CN">窗口中的</span><span lang="en-US">View Mode</span><span lang="zh-CN">按钮来选中需要的项目</span></p>
+<p><span lang="zh-CN">选中了</span><span lang="en-US">ImageView</span><span lang="zh-CN">后在检查器选择</span><span lang="en-US">Image</span><span lang="zh-CN">属性调用图像并调整其大小，用</span><span lang="en-US">apple= </span><span lang="zh-CN">自动调整。</span></p>
+<p><span lang="zh-CN">注意</span><span lang="zh-CN">在调整视图大小，按下</span><span lang="en-US">option</span><span lang="zh-CN">会显示红线</span></p>
+<p><span lang="en-US">Mode</span><span lang="zh-CN">属性设置对齐、缩放等。</span><span lang="zh-CN"> </span><span lang="zh-CN">建议不使用缩放。在使用之前调整好大小。如果有多种尺寸需要，</span><span lang="zh-CN"> </span><span lang="zh-CN">就导入多个分辨率图像</span></p>
+<p><span lang="en-US">Alpha</span><span lang="zh-CN">属性是透明度，</span><span lang="zh-CN"> </span><span lang="zh-CN">小于</span><span lang="en-US">1.0</span><span lang="zh-CN">就会透明，</span><span lang="zh-CN"> </span><span lang="zh-CN">没有必要避免设置会浪费资源</span></p>
+<p><span lang="en-US">Tag</span><span lang="zh-CN">属性</span><span lang="en-US">——</span><span lang="zh-CN">是不会更动的标记。为了在不同的按钮调用方法时区分，</span><span lang="zh-CN"> </span><span lang="zh-CN">可以比用按钮的标签来区别更好。</span></p>
+<p><span lang="en-US">Drawing</span><span lang="zh-CN">属性的</span><span lang="en-US"> Opaque </span><span lang="zh-CN">不透明度。保证下面图像不需要绘制。</span></p>
+<p><span lang="en-US">Clip Subviews</span><span lang="zh-CN">属性</span><span lang="en-US"> Clip Subviews </span><span lang="zh-CN">只在父视图范围的才显示。</span></p>
+<p><span lang="en-US">Clear Context Before Drawing</span><span lang="zh-CN">属性</span><span lang="zh-CN"> </span><span lang="zh-CN">这个可以不用勾选。</span><span lang="zh-CN"> </span><span lang="zh-CN">先用透明黑色覆盖控件区域再绘制</span></p>
+<p><span lang="en-US">Interaction</span><span lang="zh-CN">属性中的</span><span lang="en-US"> User Interaction Enabled </span><span lang="zh-CN">如图像和标签就不用选。</span><span lang="en-US">Multiple  Touch </span><span lang="zh-CN">没有必要开启</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">文本字段</span><span lang="en-US"> Text</span><span lang="zh-CN">属性是启动时该字段显示的内容</span></p>
+<p><span lang="en-US">Placeholder</span><span lang="zh-CN">以灰色显示的文本。占位符</span></p>
+<p><span lang="en-US">Alignment </span><span lang="zh-CN">对齐</span></p>
+<p><span lang="en-US">Border</span><span lang="zh-CN">属性</span><span lang="zh-CN"> </span><span lang="zh-CN">更改文本字段边缘绘制方式</span></p>
+<p><span lang="en-US">Clear When Editing Begins </span><span lang="zh-CN">用户触摸此字段删除其中的内容。否则就是编辑它。</span></p>
+<p><span lang="en-US">Adjust to Fit </span><span lang="zh-CN">指定最小值确保文本不会过小而影响阅读。</span></p>
+<p>定义键盘的外观和行为</p>
+<p><span lang="en-US">Capitalize </span><span lang="zh-CN">选</span><span lang="en-US">Words </span><span lang="zh-CN">确保单词首字母大写。比如用在姓名上面。</span></p>
+<p><span lang="en-US">Return Key </span><span lang="zh-CN">选</span><span lang="en-US">Done</span></p>
+<p>其他设置建议保留默认</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第二个文本框</span><span lang="en-US">Text Input Traits </span><span lang="en-US">——</span><span lang="en-US">Keyboard Type</span><span lang="zh-CN">选择</span><span lang="en-US"> Number Pad </span><span lang="zh-CN">只有数字不包括字母</span><span lang="zh-CN"> </span><span lang="zh-CN">并且不用设置</span><span lang="en-US">Return Key </span></p>
+<p><span lang="zh-CN">下面就是连接输出口。</span><span lang="zh-CN"> </span><span lang="zh-CN">按</span><span lang="en-US">Control </span><span lang="zh-CN">从</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">拖到文本字段选择相应输出口。记得保存</span><span lang="en-US">xib</span></p>
+<p><span lang="zh-CN">如何在完成输入后关闭键盘</span><span lang="zh-CN"> </span><span lang="zh-CN">当用户按下</span><span lang="en-US">Done , </span><span lang="zh-CN">生成</span><span lang="en-US"> did end  on exit </span><span lang="zh-CN">事件</span><span lang="zh-CN"> </span><span lang="zh-CN">告诉文本字段取消控件，</span><span lang="zh-CN"> </span><span lang="zh-CN">关闭键盘。</span><span lang="zh-CN"> </span><span lang="zh-CN">需要在控制器类中添加一个操作方法</span><span lang="zh-CN"> </span><span lang="zh-CN">修改</span><span lang="en-US">Control_FunViewContller.h</span></p>
+<p lang="en-US">#import &lt;UIKit/UIkit.h&gt;</p>
+<p lang="en-US">@interface Control_FunViewController : UIViewController {</p>
+<p lang="en-US">IBOutlet???????  UITextField??? *nameField</p>
+<p lang="en-US">IBOutlet???????  UITextField??? *numberField</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property (nonatomic, retain) UITextField *nameField;</p>
+<p lang="en-US">@property (nonatomic, retain) UITextField *numberField;</p>
+<p lang="en-US">-(IBAction)textFieldDoneEditing:(id)sender;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">那么后面需要实现方法</span><span lang="en-US"> </span><span lang="zh-CN">修改</span><span lang="en-US">Control_FunViewController.m</span></p>
+<p><span lang="zh-CN">添加</span><span lang="en-US"> </span></p>
+<p lang="en-US">-(IBAction)textFieldDoneEditing:(id)sender</p>
+<p lang="en-US">{</p>
+<p lang="en-US">[sender resignFirstResponder];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p>也就是触发此操作的任何控件取消第一响应者状态</p>
+<p><span lang="zh-CN">再来就是如何绑定</span><span lang="en-US"> iPhone</span><span lang="zh-CN">键盘上的</span><span lang="en-US">Done</span><span lang="zh-CN">按钮</span></p>
+<p><span lang="zh-CN">需要选择控件上的</span><span lang="en-US">Did End On Exit</span><span lang="zh-CN">事件</span></p>
+<p><span lang="zh-CN">将这个控件的此事件拖到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner&nbsp;</span><span lang="zh-CN">上选择</span><span lang="en-US">textFieldDoneEditing:</span><span lang="zh-CN">操作就可以点击</span><span lang="en-US">Done</span><span lang="zh-CN">来关闭输入法</span></p>
+<p>如果要通过点击任意位置来使键盘消失，  就要创建不可见的按钮并将其放置在所有元素后面。 以此来通知文本字段检测到触摸是生成第一响应者状态</p>
+<p><span lang="zh-CN">首先在控制器类中添加操作</span><span lang="zh-CN"> </span><span lang="zh-CN">修改</span><span lang="en-US"> Control_FunViewController.h</span></p>
+<p lang="en-US">#import &lt;UIKit/UIkit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface Control_FunViewController : UIViewController {</p>
+<p lang="en-US">IBOutlet???????  UITextField??? *nameField;</p>
+<p lang="en-US">IBOutlet???????  UITextField??? *numberField;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property (nonatomic, retain ) UITextField *nameField;</p>
+<p lang="en-US">@property (nonatomic, retatin)UITextField *numberField;</p>
+<p lang="en-US">-(IBAction)textFieldDoneEditing:(id)sender;</p>
+<p lang="en-US">-(IBAction)backgroundClick:(id)sender;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">下来就是实现。作用是通知所有文本字段在必要时生成第一响应者状态。在非第一响应者控件上调用</span><span lang="en-US">resignFirstResponder</span><span lang="zh-CN">是绝对安全的，可以在两个文本字段都调用。无需检查哪个才是第一响应者</span></p>
+<p lang="en-US">-(IBAction)backgroundClick: (id)sender</p>
+<p lang="en-US">{</p>
+<p lang="en-US">[nameField resignFirstResponder];</p>
+<p lang="en-US">[numberField resignFirstResponder];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">下一步就是在</span><span lang="en-US">Interface Builder</span><span lang="zh-CN">中创建不可见的按钮。并调用</span><span lang="en-US">backgroundClick</span><span lang="zh-CN">：操作</span><span lang="zh-CN"> </span><span lang="zh-CN">，</span><span lang="en-US"> </span></p>
+<ol type="A">
+  <li value="1"><span lang="zh-CN">添加了</span><span lang="en-US">button</span><span lang="zh-CN">后选择</span><span lang="en-US">Layout </span><span lang="zh-CN">菜单</span><span lang="en-US">——</span><span lang="en-US">Send to Back</span><span lang="zh-CN">置于所有元素后面。</span><span lang="en-US"> </span></li>
+  <li value="2"><span lang="zh-CN">调出</span><span lang="zh-CN"> </span><span lang="zh-CN">检查器，</span><span lang="zh-CN"> </span><span lang="zh-CN">将按钮类型从</span><span lang="en-US">Rounded Rect</span><span lang="zh-CN">更改为</span><span lang="en-US">Custom, </span><span lang="zh-CN">将其定义为没有外观的按钮</span></li>
+  <li value="3"><span lang="zh-CN">切换到连接检查器，从</span><span lang="en-US">Touch Up Inside</span><span lang="zh-CN">事件拖到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">，选择</span><span lang="en-US">backgroundClick</span><span lang="zh-CN">：操作</span></li>
+</ol>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">滑块控件</span><span lang="en-US">——</span><span lang="zh-CN">移动滑块标签就会改变滑块的值</span></p>
+<p><span lang="zh-CN">标签需要输出口，滑块不需要输出口。滑块触发操作，这个操作方法接受指向滑块的指针。直接就可以从</span><span lang="en-US">sender</span><span lang="zh-CN">检索滑块值，不需要输出口获取</span></p>
+<p>由于另一个控件会和滑块拥有相同值，  而且已经有了一个输出口，没有必要尽量不要指针占用内存。</p>
+<p>如何在滑块发生更改时调用操作。  在滑块发生更改时调用操作。 标签是静态的， 不能和用户交互， 所以不需要触发操作</p>
+<p><span lang="zh-CN">也就是要在</span><span lang="en-US">Control_FunViewController.h</span><span lang="zh-CN">中声明一个输出口和一个操作。</span></p>
+<p><span lang="en-US">IBOutlet??? UILabel???  *sliderLabel</span><span lang="zh-CN">；</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">@property (nonatomic</span><span lang="zh-CN">，</span><span lang="en-US">retain) UILabel *sliderLabel;</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)sliderChanged: (id)sender;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">下面就需要实现了</span><span lang="en-US"> Control_FunViewContorller.m </span><span lang="zh-CN">添加属性同步程序并添加</span><span lang="en-US">sliderChanged: </span><span lang="zh-CN">方法</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@sysnthesize sliderLabel;</p>
+<p lang="en-US">-(IBAction)sliderChanged: (id)sender</p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">UISlider *slider = (UISlider *)sender;  //</span><span lang="zh-CN">这里先将</span><span lang="en-US">sender</span><span lang="zh-CN">转换为</span><span lang="en-US">UISlider,</span><span lang="zh-CN">要避免对</span><span lang="en-US">sender</span><span lang="zh-CN">进行类型转换</span></p>
+<p><span lang="en-US">int progressAsInt = (int)(slider.value +  0.5f);??????????? //</span><span lang="zh-CN">这里接受滑块的值并加</span><span lang="en-US">0.5 </span><span lang="zh-CN">获得四舍五入为整数存储为整型</span></p>
+<p><span lang="en-US">NSString *newText = [[NSString alloc]  initWithFormat:@”%d”, progressAsInt]; //</span><span lang="zh-CN">将上面的值存入字符串</span></p>
+<p><span lang="en-US">sliderLabel.text = newText; // </span><span lang="zh-CN">将标签设置为文本</span></p>
+<p><span lang="en-US">[newText release];???????????????????????????????????????????????  //</span><span lang="zh-CN">必须要释放</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">编辑完代码需要设计</span><span lang="en-US">IB</span><span lang="zh-CN">，添加滑块和标签。注意添加滑块占用大部分水平空间。设置最小值、最大值和初值。在滑块左边放入标签并设定文本为</span><span lang="en-US">100</span><span lang="zh-CN">，显示出最大值宽度。最后将文本设置为初值</span><span lang="en-US">50.</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">下来就是连接两个控件的输出口和操作了。</span><span lang="zh-CN"> </span><span lang="zh-CN">用</span><span lang="en-US">Control</span><span lang="zh-CN">键从</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">拖放到标签。选择</span><span lang="en-US">sliderLabel</span><span lang="zh-CN">输出口。</span></p>
+<p><span lang="zh-CN">选择连接检查器并将</span><span lang="en-US">ValueChanged</span><span lang="zh-CN">事件拖到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner </span><span lang="zh-CN">并选择</span><span lang="en-US">sliderChanged </span></p>
+<p><span lang="zh-CN">小技巧：</span><span lang="zh-CN"> </span><span lang="zh-CN">如果用</span><span lang="en-US">Control</span><span lang="zh-CN">键从</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">只能选较大的背景按钮，</span><span lang="zh-CN"> </span><span lang="zh-CN">可以通过</span><span lang="en-US">apple2 </span><span lang="zh-CN">按钮用连接检查器来连</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">开关和分段控件</span><span lang="en-US"> </span><span lang="zh-CN">用分段控件来隐藏两个开关的开和关状态</span></p>
+<p>注意分段控件不用输出口，我们不改变其属性或在调用操作方法外引用</p>
+<p><span lang="zh-CN">开关需要有输出口。因为任一开关值会改变另外的值。</span><span lang="zh-CN"> </span><span lang="zh-CN">我们是</span><span lang="zh-CN">更改未触发操作的开关的值，不依赖</span><span lang="en-US">sender</span><span lang="zh-CN">。</span><span lang="zh-CN">还要加一个输出口给另一个视图。</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>编写分段控件触发的操作方法</p>
+<p><span lang="en-US">Control_FunViewController.h </span><span lang="zh-CN">添加</span><span lang="en-US">3</span><span lang="zh-CN">个输出口和两个操作</span></p>
+<p lang="en-US">#import &lt;UIKit/UIKit.h&gt;</p>
+<p><span lang="en-US">#define kShowSegmentIndex 0 //</span><span lang="zh-CN">这个是引用</span><span lang="en-US">UISegmentedControl</span><span lang="zh-CN">属性</span><span lang="en-US">——</span><span lang="en-US">selectedSegmentIndex </span><span lang="zh-CN">这是一个整数值，</span><span lang="en-US">show</span><span lang="zh-CN">的分段索引为</span><span lang="en-US">0 </span></p>
+<p>……</p>
+<p lang="en-US">IBOutlet??? UISwitch???? *leftSwitch;</p>
+<p lang="en-US">IBOutlet??? UISwitch  *rightSwitch;</p>
+<p lang="en-US">IBOutlet??? UIView??? *switchView;</p>
+<p>……</p>
+<p lang="en-US">@property (nonatomic,retain) UISwitch *leftSwitch;</p>
+<p lang="en-US">@property (nonatomic, retain) UISwitch *rightSwitch;</p>
+<p lang="en-US">@property (nonatomic , retain) UIView *switchView;</p>
+<p><span lang="zh-CN">……</span><span lang="en-US">.</span></p>
+<p lang="en-US">-(IBAction)switchChanged: (id)sender;</p>
+<p lang="en-US">-(IBAction)toggleShowHide: (id)sender;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">下来是实现，修改</span><span lang="en-US">Control_FunViewController.m</span></p>
+<p>……</p>
+<p lang="en-US">@synthesize leftSwitch;</p>
+<p lang="en-US">@synthesize rightSwitch;</p>
+<p lang="en-US">@synthesize switchView;</p>
+<p lang="en-US">-(IBAction)switchChanged: (id)sender</p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">UISwitch *whichSwitch = (UISwitch  *)sender; //</span><span lang="zh-CN">只是获取</span><span lang="en-US">sender</span><span lang="zh-CN">值</span></p>
+<p><span lang="en-US">BOOL setting = whichSwitch.isOn;??????????????? //</span><span lang="zh-CN">存储开关的状态</span></p>
+<p lang="en-US">[leftSwitch setOn:setting animated:YES];</p>
+<p><span lang="en-US">[rightSwitch setOn:setting  animated:YES]; //</span><span lang="zh-CN">无论哪个开关调用此方法，都将设置为正确的值</span><span lang="zh-CN"> </span><span lang="zh-CN">这里的</span><span lang="en-US">animated</span><span lang="zh-CN">参数控制瞬间或缓慢变化</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)toggleShowHide: (id)sender </p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">UISegmentedControl *segmentedControl =  [UISegmentedControl *]sender; //</span><span lang="zh-CN">当前选中的分段</span></p>
+<p lang="en-US">NSInteger segment = segmentedControl.selectedSegmentIndex;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">if (segment == kShowSegmentIndex )  [switchView setHidden:NO]; //</span><span lang="zh-CN">如果当前选中的分段为</span><span lang="en-US">0</span><span lang="zh-CN">代表显示，则开关视图显示</span></p>
+<p lang="en-US">else [switchView setHidden:YES]; </p>
+<p lang="en-US">}</p>
+<p>……</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">中添加开关和分段开关</span></p>
+<p><span lang="zh-CN">修改分段开关的文本为</span><span lang="en-US">Show</span><span lang="zh-CN">和</span><span lang="en-US">Hide</span></p>
+<p><span lang="zh-CN">下面是重点：</span><span lang="zh-CN"> </span><span lang="zh-CN">添加一个视图，放在</span><span lang="en-US">View</span><span lang="zh-CN">窗口分段控件的正下方。默认这个</span><span lang="en-US">view</span><span lang="zh-CN">是容器没有背景。可以更改。如果选不中，可以按</span><span lang="en-US">option</span><span lang="zh-CN">用鼠标选</span></p>
+<p><span lang="zh-CN">下面是添加带标签的开关</span><span lang="zh-CN"> </span><span lang="zh-CN">。</span><span lang="zh-CN"> </span><span lang="zh-CN">确保开关放在新视图上，</span><span lang="zh-CN"> </span><span lang="zh-CN">应该看到灰色的</span><span lang="en-US">View</span><span lang="zh-CN">框和绿色的加号图标。添加完两个开关和两个标签。可以用</span><span lang="en-US">option</span><span lang="zh-CN">拖动复制对象。</span></p>
+<p><span lang="zh-CN">接着连接输出口。按</span><span lang="en-US">Control</span><span lang="zh-CN">从</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">拖到开关选</span><span lang="en-US">leftSwitch</span><span lang="zh-CN">或</span><span lang="en-US">rightSwitch</span><span lang="zh-CN">输出口。还有视图的</span><span lang="en-US"> switchView</span><span lang="zh-CN">输出口</span></p>
+<p><span lang="zh-CN">下来是添加时间操作。</span><span lang="zh-CN"> </span><span lang="zh-CN">选中一个开关后从</span><span lang="en-US">Value Changed</span><span lang="zh-CN">事件拖动到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">，选择</span><span lang="en-US">switchChanged:</span><span lang="zh-CN">操作。重复另一个开关</span></p>
+<p><span lang="zh-CN">下来是分段控件，</span><span lang="zh-CN"> </span><span lang="zh-CN">选择</span><span lang="en-US">Value Changed</span><span lang="zh-CN">事件拖到</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner </span><span lang="zh-CN">选择</span><span lang="en-US">toggleShowHide</span><span lang="zh-CN">：操作方法。</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">用按钮来提示警告和弹出操作表</span><span lang="en-US"> </span><span lang="zh-CN">用</span><span lang="en-US">DoSomething</span><span lang="zh-CN">按钮</span></p>
+<p><span lang="zh-CN">还是在头文件添加新的输出口和操作方法。比如编码定制外观时用到按钮的输出口。</span><span lang="zh-CN"> </span><span lang="zh-CN">头文件还必须要确保自己定义的类要符合</span><span lang="en-US">UIActionSheetDelegate</span><span lang="zh-CN">协议。</span><span lang="zh-CN"> </span><span lang="zh-CN">因为要接收操作表中的消息，需要符合</span><span lang="en-US">UIActionSheetDelegate</span><span lang="zh-CN">协议。实现其中的回调方法。操作表是</span><span lang="zh-CN">模式化</span><span lang="zh-CN">的</span><span lang="en-US">——</span><span lang="zh-CN">显示时不能交互其他部分就是</span><span lang="zh-CN">强制</span><span lang="zh-CN">让用户决定选择</span></p>
+<p><span lang="zh-CN">修改</span><span lang="en-US">Control_FunViewController.h</span></p>
+<p>…</p>
+<p><span lang="en-US">@interface Control_FunViewController :  UIViewController &lt;</span><span lang="en-US">UIActionSheetDelegate,UIAlertViewDelegate</span><span lang="en-US">&gt; { </span><span lang="en-US">//</span><span lang="zh-CN">因为要用到操作表和警告的委托，注意添加协议</span></p>
+<p><span lang="zh-CN">……</span><span lang="en-US">.</span></p>
+<p lang="en-US">IBOutlet UIButton *doSomethingButton;</p>
+<p lang="en-US">}</p>
+<p>……</p>
+<p lang="en-US">@property (nonatomic , retain) UIButton *doSomethingButton;</p>
+<p>……</p>
+<p lang="en-US">-(IBAction)doSomething: (id)sender;</p>
+<p lang="en-US">......</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">中添加按钮，</span><span lang="zh-CN"> </span><span lang="zh-CN">注意点：修改标签</span><span lang="zh-CN"> </span><span lang="zh-CN">，</span><span lang="zh-CN"> </span><span lang="zh-CN">按</span><span lang="en-US">Ctrl </span><span lang="zh-CN">从</span><span lang="en-US">File</span><span lang="zh-CN">’</span><span lang="en-US">s Owner</span><span lang="zh-CN">拖放到按钮，选择连接到</span><span lang="en-US">doSomethingButton</span><span lang="zh-CN">输出口。</span><span lang="en-US"> Touch Up Inside</span><span lang="zh-CN">事件连到</span><span lang="en-US">doSomething: </span><span lang="zh-CN">操作。</span></p>
+<p><span lang="zh-CN">关键是在实现操作方法</span><span lang="en-US">, </span><span lang="zh-CN">修改</span><span lang="en-US">Control_FunViewController.m</span></p>
+<p><span lang="zh-CN">要实现</span><span lang="zh-CN"> </span><span lang="zh-CN">那个</span><span lang="en-US">delegate</span><span lang="zh-CN">中的</span><span lang="en-US">UIActionSheetDelegate()</span><span lang="zh-CN">方法。让用户在按下操作表按钮时获取通知。</span></p>
+<p>……</p>
+<p lang="en-US">@synthesize doSomethingButton;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)doSomething: (id)sender</p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">UIActionsheet *actionSheet =  [[UIActionSheet alloc]initWithTitle:@”Are you sure?” //</span><span lang="zh-CN">分配并初始化一个</span><span lang="en-US">UIActionSheet</span><span lang="zh-CN">对象，这个是标题参数</span></p>
+<p><span lang="en-US">delegate:self???????? </span><span lang="en-US">//</span><span lang="zh-CN">委托在按钮按下时收到通知，也就是委托的</span><span lang="en-US">actionsheet:didDismissWithButtonIndex:actionSheet:didDismissWithButtonIndex:</span><span lang="zh-CN">方法被调用</span><span lang="zh-CN"> </span><span lang="zh-CN">将</span><span lang="en-US">self</span><span lang="zh-CN">作为委托参数传递给该方法。</span></p>
+<p><span lang="en-US">cancelButtonTitle:@</span><span lang="zh-CN">”</span><span lang="en-US">No Way!</span><span lang="zh-CN">”</span><span lang="en-US"> //</span><span lang="zh-CN">取消按钮的标题，所有的操作表都有</span><span lang="zh-CN"> </span><span lang="zh-CN">如果仅需要通知用</span><span lang="zh-CN">警告表</span></p>
+<p><span lang="en-US">destructiveButtonTitle:@</span><span lang="zh-CN">”</span><span lang="en-US">Yes , I</span><span lang="zh-CN">’</span><span lang="en-US">m Sure!” //</span><span lang="zh-CN">确定继续按钮</span></p>
+<p><span lang="en-US">otherButtonTitles:nil]; </span><span lang="en-US">//</span><span lang="zh-CN">希望在表单显示其他按钮的数量例如</span><span lang="en-US">//otherButtonTitles:@</span><span lang="zh-CN">”</span><span lang="en-US">Foo</span><span lang="zh-CN">”</span><span lang="en-US">,@</span><span lang="zh-CN">”</span><span lang="en-US">Bar</span><span lang="zh-CN">”</span><span lang="en-US">,nil]; </span><span lang="zh-CN">注意不要超出屏幕控件</span></p>
+<p><span lang="en-US">[actionSheet showInView:self.view]; //</span><span lang="zh-CN">显示自己的</span><span lang="en-US">view</span><span lang="zh-CN">属性</span></p>
+<p lang="en-US">[actionsheet release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(void)actionSheet: (UIActionSheet  *)actionSheet </span><span lang="en-US">//</span><span lang="zh-CN">创建操作表</span></p>
+<p><span lang="en-US">didDismissWithButtonIndex:  (NSInteger)buttonIndex /</span><span lang="en-US">/buttonIndex</span><span lang="zh-CN">这个参数显示按下的按钮</span></p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">if (!buttonIndex == [actionSheet  cancelButtonIndex]) </span><span lang="en-US">//cancelButtonIndex</span><span lang="zh-CN">知道哪个按钮是取消按钮。这里确保没按下取消钮</span></p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">NSString *msg = nil;??????????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">向用户显示的新字符串</span></p>
+<p><span lang="en-US">if (nameField.text.length &gt; 0) </span><span lang="en-US">// </span><span lang="zh-CN">用户在顶部文本字段输入了姓名，获取后显示在消息中</span></p>
+<p lang="en-US">msg = [[NSString alloc]initWithFormat:</p>
+<p><span lang="en-US">@</span><span lang="zh-CN">”</span><span lang="en-US">You can breathe  easy, %@,everything went OK.” </span><span lang="en-US">//</span><span lang="zh-CN">前面是字符串，后面是活的的姓名字符串</span></p>
+<p lang="en-US">,nameField.text];</p>
+<p lang="en-US">else</p>
+<p><span lang="en-US">msg = @”You can breathe easy, everything  wetn OK.”; </span><span lang="en-US">//</span><span lang="zh-CN">否则就显示普通消息。</span></p>
+<p><span lang="en-US">UIAlertView *alert = [[UIAlertView  alloc] </span><span lang="en-US">//</span><span lang="zh-CN">初始化警告信息</span></p>
+<p><span lang="en-US">initWithTitle:@</span><span lang="zh-CN">”</span><span lang="en-US">Something was done” </span><span lang="en-US">//</span><span lang="zh-CN">标题</span></p>
+<p><span lang="en-US">message:msg??????????????????????????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">消息就是消息文本</span></p>
+<p><span lang="en-US">delegate:self??????????????????????????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">警告的委托</span></p>
+<p><span lang="en-US">cancelButtonTitle:@</span><span lang="zh-CN">”</span><span lang="en-US">Phew!</span><span lang="zh-CN">”</span></p>
+<p><span lang="en-US">otherButtonTitles:nil]; </span><span lang="en-US">//</span><span lang="zh-CN">在按钮按下时不需要执行操作</span></p>
+<p><span lang="en-US">[alert show]; </span><span lang="en-US">//</span><span lang="zh-CN">警告不需要和特定视图绑定，没有父视图</span></p>
+<p lang="en-US">[alert release];</p>
+<p lang="en-US">[msg release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">}</p>
+<p>……</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">要</span><span lang="zh-CN">注意</span><span lang="zh-CN"> </span><span lang="zh-CN">图标的外观是可以定义模板。</span><span lang="zh-CN"> </span><span lang="zh-CN">每个程序不能访问其他应用程序的模板。所有要用到的图像都要放在应用程序的</span><span lang="en-US">bound</span><span lang="zh-CN">中</span></p>
+<p><span lang="zh-CN">如何获取图像模板。可以从示例</span><span lang="en-US">UICatalog</span><span lang="zh-CN">中获取。</span><span lang="en-US"> </span></p>
+<p><span lang="zh-CN">如何在</span><span lang="en-US">IB</span><span lang="zh-CN">中自定义按钮的外观类型</span><span lang="en-US"> </span><span lang="zh-CN">，选中后将类型从</span><span lang="en-US">Round  Rect </span><span lang="zh-CN">改为</span><span lang="en-US"> Custom</span><span lang="zh-CN">。可以指定按钮图像，我们在</span><span lang="en-US">Xcode</span><span lang="zh-CN">中改，要</span><span lang="zh-CN">修改</span><span lang="en-US">nib</span><span lang="zh-CN">文件中任何</span><span lang="zh-CN">对象</span><span lang="zh-CN">，</span><span lang="zh-CN"> </span><span lang="zh-CN">需要</span><span lang="zh-CN">重写控制器父类</span><span lang="en-US">UIViewController</span><span lang="zh-CN">中的</span><span lang="en-US">viewDidLoad</span><span lang="zh-CN">方法</span><span lang="zh-CN">，此操作无法在</span><span lang="en-US">IB</span><span lang="zh-CN">中实现</span></p>
+<p><span lang="zh-CN">修改</span><span lang="en-US"> Control_FunViewController.m </span><span lang="zh-CN">加入或修改</span><span lang="en-US"> viewDidLoad</span><span lang="zh-CN">方法</span></p>
+<p><span lang="en-US">#import </span><span lang="zh-CN">“</span><span lang="en-US">Control_FunViewController.h</span><span lang="zh-CN">”</span></p>
+<p lang="en-US">@implementation Control_FunViewController</p>
+<p lang="en-US">@synthesize nameField;</p>
+<p>……</p>
+<p lang="en-US">-(void)viewDidLoad</p>
+<p lang="en-US">{</p>
+<p lang="en-US">UIImage *buttonImageNormal = [UIImage  imageNamed:@”whiteButton.png”];</p>
+<p lang="en-US">UIImage *stretchableButtonImageNormal = [buttonImageNormal </p>
+<p lang="en-US">stretchableImageWithLeftCapWidth:12 topCapHeight:0];</p>
+<p lang="en-US">[doSomethingButton setBackgroundImage:stretchableButtonImageNormal </p>
+<p lang="en-US">forState:UIControlStateNormal];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">UIImage *buttonImagePressed = [UIImage  imageNamed:@”blueButton.png”];</p>
+<p lang="en-US">UIImage *stretchableButtonImagePressed = [buttonImagePressed</p>
+<p lang="en-US">stretchableImageWithLeftCapWidth:12 topCapHeight:0];</p>
+<p lang="en-US">[doSomethingButton setBackgroundImage:stretchableButtonImagePressed</p>
+<p lang="en-US">forState:UIControlStateHighlighted];</p>
+<p lang="en-US">}</p>
+<p>实现的功能是将模板文件作为按钮背景。指定按钮被触摸时从白色变蓝色。其中有控件状态和可拉伸图像。</p>
+<p><span lang="zh-CN">控件有四种状态</span><span lang="en-US">——</span><span lang="en-US"> </span><span lang="zh-CN">普通、突出（正在使用，触摸到）、禁用（</span><span lang="en-US">IB</span><span lang="zh-CN">中需要</span><span lang="en-US">Enabled</span><span lang="zh-CN">复选框，或者</span><span lang="en-US">enable</span><span lang="zh-CN">属性设置为</span><span lang="en-US">NO</span><span lang="zh-CN">）、选中（类似突出，但是可以在不使用时保持选中）</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">如何拉伸调整图像大小，可智能调整。边缘不需要拉伸。端帽（</span><span lang="en-US">end cap</span><span lang="zh-CN">）是图像的一部分，不会被调整，可以设置左边端帽为</span><span lang="en-US">12</span><span lang="zh-CN">像素</span></p>
+<p align="center"><a href="iPhoneStudy2.html">转第2页</a></p>
+</body>
+</html>

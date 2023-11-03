@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>vingleo的iPhone开发笔记</title>
+<style type="text/css">
+<!--
+body {
+	background-color: #999999;
+}
+.STYLE2 {
+	font-size: xx-large;
+	font-family: "宋体";
+	font-weight: bold;
+	color: #9900CC;
+}
+-->
+</style></head>
+
+<body>
+<p class="STYLE2">vingleo的iPhone开发笔记（2）</p>
+<p><span lang="zh-CN">第五章</span><span lang="en-US">? </span><span lang="zh-CN">旋转和自动调整大小</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>能够自动旋转的原则是：只有当自动旋转能够增强用户体验才加入此功能。</p>
+<p><span lang="zh-CN">可以在视图控制器中设定自动旋转会旋转窗口和视图，</span><span lang="en-US"> </span><span lang="zh-CN">调整窗口和视图的大小</span></p>
+<p>&nbsp;</p>
+<div>
+  <table border="1" cellpadding="0" cellspacing="0" valign="top">
+    <tr>
+      <td><p lang="en-US">&nbsp;</p></td>
+      <td><p>宽度</p></td>
+      <td><p>高度</p></td>
+    </tr>
+    <tr>
+      <td><p>纵向</p></td>
+      <td><p lang="en-US">320</p></td>
+      <td><p><span lang="en-US">460</span><span lang="zh-CN">含状态栏</span><span lang="en-US">480</span></p></td>
+    </tr>
+    <tr>
+      <td><p>横向</p></td>
+      <td><p lang="en-US">480</p></td>
+      <td><p><span lang="en-US">300</span><span lang="zh-CN">含状态栏</span><span lang="en-US">320</span></p></td>
+    </tr>
+  </table>
+</div>
+<p lang="en-US">&nbsp;</p>
+<p>有三种方法控制旋转：</p>
+<ol type="1">
+  <li value="1">最简单——所有对象指定正确的自动调整属性</li>
+  <li value="2">在看到视图旋转提示时，手工调整对象位置。</li>
+  <li value="3"><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">中设计两种视图版本。</span></li>
+</ol>
+<p><span lang="en-US">2</span><span lang="zh-CN">和</span><span lang="en-US">3 </span><span lang="zh-CN">需要覆盖视图控制器类的</span><span lang="en-US">UIVIewController</span><span lang="zh-CN">方法</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">1</span><span lang="zh-CN">种：创建基于视图的应用程序模板，告知该视图支持自动旋转。</span></p>
+<p><span lang="zh-CN">打开视图控制器实现文件，如</span><span lang="en-US">AutoSizeViewController.m</span></p>
+<p><span lang="zh-CN">找到</span><span lang="en-US">shouldAutorotateToInterfaceOrientation: </span><span lang="zh-CN">方法</span></p>
+<p lang="en-US">-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  {</p>
+<p lang="en-US">//Return YES for supported orientations</p>
+<p lang="en-US">? return (interfaceOrientation  == UIInterfaceOrientationPortrait);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">四个方向</span><span lang="en-US"> </span><span lang="zh-CN">注意只能一条一条加，默认限定一个方向，</span><span lang="en-US"> </span><span lang="zh-CN">代码感知用</span><span lang="en-US">Escape</span><span lang="zh-CN">键，用</span><span lang="en-US">tab</span><span lang="zh-CN">或</span><span lang="en-US">return</span><span lang="zh-CN">键确定</span></p>
+<p lang="en-US">UIInterfaceOrientationPortrait</p>
+<p lang="en-US">UIInterfaceOrientationPortraitUpsideDown</p>
+<p lang="en-US">UIInterfaceOrientationLandscapeLeft</p>
+<p lang="en-US">UIInterfaceOrientationLandscapeRight</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">也可以对任何值都返回</span><span lang="en-US">YES</span><span lang="zh-CN">，自动旋转</span></p>
+<p lang="en-US">-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  {</p>
+<p lang="en-US">//Return YES for supported orientations</p>
+<p lang="en-US">?? return YES;</p>
+<p lang="en-US">}</p>
+<p><span lang="zh-CN">可用</span><span lang="en-US">?? return  (interfaceOrientation? == XXXX || </span></p>
+<p><span lang="en-US">??  interfaceOrienttation == XXXX ||);???? </span><span lang="zh-CN">来支持部分方向</span></p>
+<p><span lang="zh-CN">手机应用不建议用</span><span lang="en-US">UIInterfaceOrientationPortraitUpSideDown,</span><span lang="zh-CN">可能手机功能会倒置</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">2</span><span lang="zh-CN">种：使用自动调整属性设计界面</span></p>
+<p>在界面中设置时确定默认方向，但是切换为横向时控件保持了与屏幕左侧和上侧的位置。</p>
+<p><span lang="zh-CN">可以选中左上方的控件，调出大小检查器，</span><span lang="en-US">autosizing </span><span lang="zh-CN">这个就是选中的控件，其中的实线代表此方向会自动更改大小，虚线是尽量保持原大小，四个红色</span><span lang="en-US"> </span><span lang="zh-CN">“</span><span lang="en-US">I</span><span lang="zh-CN">”标记实线是表示间距尽量不变，</span><span lang="en-US"> </span><span lang="zh-CN">虚线为可变</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">3</span><span lang="zh-CN">中：在旋转时重构视图</span></p>
+<p>如果在安排空间时尺寸过大，在切换方向时会重叠在一起，可以移动按钮的布局，指定每个控件在旋转后的位置，这个需要通过修改代码更改控件属性，别忘记设定对象的输出口</p>
+<p><span lang="zh-CN">例如修改</span><span lang="en-US">AutoSizeViewController.h </span></p>
+<p lang="en-US">#import &lt;UIKit/Uikit.h&gt;</p>
+<p>&nbsp;</p>
+<p lang="en-US">@interface AutosizeViewController : UIViewController {</p>
+<p lang="en-US">IBOutlet??? UIButton *button1;</p>
+<p lang="en-US">IBOutlet??? UIButton *button2;</p>
+<p lang="en-US">IBOutlet??? UIButton *button3;</p>
+<p lang="en-US">IBOutlet??? UIButton *button4;</p>
+<p lang="en-US">IBOutlet??? UIButton *button5;</p>
+<p lang="en-US">IBOutlet??? UIButton *button6;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property (nonatomic, retain) UIView *button1;</p>
+<p lang="en-US">@property (nonatomic, retain) UIView *button2;</p>
+<p lang="en-US">@property (nonatomic, retain) UIView *button3;</p>
+<p lang="en-US">@property (nonatomic, retain) UIView *button4;</p>
+<p lang="en-US">@property (nonatomic, retain) UIView *button5;</p>
+<p lang="en-US">@property (nonatomic, retain) UIView *button6;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p>然后指定每个控件和输出口的连接。</p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">如果要移动按钮，</span><span lang="en-US"> </span><span lang="zh-CN">需要覆盖</span><span lang="en-US">AutosizeViewContrller.m</span><span lang="zh-CN">中的</span><span lang="en-US">willAnimateSecondHalfRotationFromInterfaceOritation:duration: </span><span lang="zh-CN">的方法，发生在旋转开始之后，最后的旋转动画发生之前调用。</span></p>
+<p><span lang="zh-CN">注意另一个</span><span lang="en-US">willAnimateFirstHalfRotationFromInterfaceOritation:duration: </span><span lang="zh-CN">方法是旋转动画发生之前。我们是希望在旋转完成同时移动到新位置。修改</span><span lang="en-US">AutosizeViewContrller.m</span></p>
+<p lang="en-US">#import &quot;AutosizeViewContrller.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">#implementation AutosizeViewController</p>
+<p lang="en-US">@synthesize button1;</p>
+<p lang="en-US">@synthesize button2;</p>
+<p lang="en-US">@synthesize button3;</p>
+<p lang="en-US">@synthesize button4;</p>
+<p lang="en-US">@synthesize button5;</p>
+<p lang="en-US">@synthesize button6;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:</p>
+<p lang="en-US">(UIInterfaceOrientation)fromInterfaceOrientationduration:(NSTimeInterval)duration  {</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">UIInterfaceOrientation??  toOrientation = self.interfaceOrientation;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?if (toOrientation ==  UIInterfaceOrientationPortrait</p>
+<p lang="en-US">|| toOrientation == UIInterfaceOrientationPortraitUpsideDown)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">button1.frame = CGRectMake(20,20,125,125);</p>
+<p lang="en-US">button2.frame = CGRectMake(175,20,125,125);</p>
+<p lang="en-US">button3.frame = CGRectMake(20,168,125,125);</p>
+<p lang="en-US">button4.frame = CGRectMake(175,168,125,125);</p>
+<p lang="en-US">button5.frame = CGRectMake(20,315,125,125);</p>
+<p lang="en-US">button6.frame = CGRectMake(175,315,125,125);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else</p>
+<p lang="en-US">{</p>
+<p lang="en-US">button1.frame = CGRectMake(20,20,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(20,155,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(177,20,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(177,155,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(328,20,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(328,155,125,125);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(BOOL)shouldAutorotateToInterfaceOrientation:</p>
+<p lang="en-US">(UIInterfaceOrientation)interfaceOrientation? {</p>
+<p lang="en-US">?return (interfaceOrientation  == UIInterfaceOrientationPortrait ||</p>
+<p lang="en-US">?? interfaceOrientation ==  UIInterfaceOrientationLandscapeLeft ||</p>
+<p lang="en-US">?? interfaceOrientation ==  UIInterfaceOrientationLandscapeRight);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(void)didReceiveMemoryWarning {</p>
+<p lang="en-US">[super didReceiveMemoryWarning];</p>
+<p lang="en-US">// Release the view if it doesn't have a superview</p>
+<p lang="en-US">// Release anything that's not essential, such as cached data</p>
+<p lang="en-US">}</p>
+<p>&nbsp;</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p><span lang="en-US">[button1 release];????????????? //</span><span lang="zh-CN">释放按钮</span></p>
+<p lang="en-US">[button2 release];</p>
+<p lang="en-US">[button3 release];</p>
+<p lang="en-US">[button4 release];</p>
+<p lang="en-US">[button5 release];</p>
+<p lang="en-US">[button6 release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">这样画面切换的时候不够顺滑，</span><span lang="en-US"> </span><span lang="zh-CN">需要添加转换动画（利用</span><span lang="en-US">Core  Animation</span><span lang="zh-CN">），将按钮移动的过程制作成动画——将想要制成动画的所有更改一起放在动画块内部。</span><span lang="en-US"> </span><span lang="zh-CN">添加两行开始和结束位置</span></p>
+<p lang="en-US">…...</p>
+<p lang="en-US">-(void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:</p>
+<p lang="en-US">(UIInterfaceOrientation)fromInterfaceOrientation</p>
+<p lang="en-US">duration:(NSTimeInterval)duration {</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">UIInterfaceOrientation?  toOrientation = self.interfaceOrientation;</p>
+<p><span lang="en-US">[UIView??? beginAnimations:@&quot;move buttons&quot;  context:nil];????? //</span><span lang="zh-CN">是个类方法，</span><span lang="en-US">move buttons</span><span lang="zh-CN">是动画块名称</span><span lang="en-US">??????????? //context</span><span lang="zh-CN">是委托方法的使用，不使用</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?if (toOrientation ==  UIInterfaceOrientationPortrait</p>
+<p lang="en-US">???? || toOrientation ==  UIInterfaceOrientationPortraitUpsideDown)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">button1.frame = CGRectMake(20,20,125,125);</p>
+<p lang="en-US">button2.frame = CGRectMake(175,20,125,125);</p>
+<p lang="en-US">button3.frame = CGRectMake(20,168,125,125);</p>
+<p lang="en-US">button4.frame = CGRectMake(175,168,125,125);</p>
+<p lang="en-US">button5.frame = CGRectMake(20,315,125,125);</p>
+<p lang="en-US">button6.frame = CGRectMake(175,315,125,125);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else</p>
+<p lang="en-US">{</p>
+<p lang="en-US">button1.frame = CGRectMake(20,20,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(20,155,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(177,20,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(177,155,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(328,20,125,125);</p>
+<p lang="en-US">button1.frame = CGRectMake(328,155,125,125);</p>
+<p lang="en-US">}</p>
+<p><span lang="en-US">[UIView??? commitAnimations];????? //</span><span lang="zh-CN">调用另一个类方法结束动画</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">……</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">3</span><span lang="zh-CN">种：补充</span><span lang="en-US"> </span><span lang="zh-CN">用两种不同的视图来触发相同的操作需要提供两个不同的输出口。</span></p>
+<p><span lang="zh-CN">例如创建基于视图的新项目。结构是两个视图、两个按钮分别用不同的输出口，可能会有需要隐藏或禁用某个按钮。比如会有很长时间操作过程。要声明四个按钮的输出口，不能通过用</span><span lang="en-US">sender</span><span lang="zh-CN">来判断哪个按钮。还要有两个输出口来指向不同视图。一个视图可以用父类的</span><span lang="en-US">view</span><span lang="zh-CN">属性，因为要获得不同</span><span lang="en-US">view</span><span lang="zh-CN">。另外要一个动作方法来处理按下按钮的操作。在视图控制器声明</span><span lang="en-US">buttonPressed</span><span lang="zh-CN">：动作</span></p>
+<p><span lang="zh-CN">例子：添加输出口和动作声明代码到</span><span lang="en-US">SwapViewController.h</span></p>
+<p lang="en-US">#import &lt;UIKit.UIKit.h&gt;</p>
+<p><span lang="en-US">#define???? degreesToRadian(x)? (M_PI * (x) / 180.0)??????? </span><span lang="en-US">// </span><span lang="zh-CN">宏</span><span lang="zh-CN">，</span><span lang="zh-CN">将度数转弧度，指定角度</span><span lang="en-US"> </span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface SwapViewController : UIViewController {</p>
+<p lang="en-US">IBOutlet?????? UIView???? *landscape</p>
+<p lang="en-US">IBoutlet??????? UIView???? *portrait;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">// Foo</p>
+<p lang="en-US">IBOutlet??????? UIButton???? *landscapeFooButton;</p>
+<p lang="en-US">IBOutlet??????? UIButton???? *portraitFooButton;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">// Bar</p>
+<p lang="en-US">IBOutlet?????? UIButton???? *landscapeBarButton;</p>
+<p lang="en-US">IBOutlet?????? UIButton???? *portraitBarButton;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@property (nonatomic, retain)?  UIView??? *landscape;</p>
+<p lang="en-US">@property (nonatomic, retain)?  UIView??? *portrait;</p>
+<p lang="en-US">@property (nonatomic, retain)?  UIButton? *landscapeFooButton;</p>
+<p lang="en-US">@property (nonatomic, retain)?  UIButton? *portraitFooButton;</p>
+<p lang="en-US">@property (nonatomic, retain)?  UIButton? *landscapeBarButton;</p>
+<p lang="en-US">@property (nonatomic, retain)?  UIButton? *portraitFooButton;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)buttonPressed:(id)sender;</p>
+<p lang="en-US">@end</p>
+<p><span lang="zh-CN">然后要编辑</span><span lang="en-US">IB</span><span lang="zh-CN">，注意默认的</span><span lang="en-US">nib</span><span lang="zh-CN">提供的</span><span lang="en-US">View</span><span lang="zh-CN">图标无法修改大小，直接选中后删除。从库里拖出两个</span><span lang="en-US">UIView</span><span lang="zh-CN">并重命名为</span><span lang="en-US">Portrait</span><span lang="zh-CN">和</span><span lang="en-US">Landscape</span><span lang="zh-CN">。下面分别指定视图的输出口。</span><span lang="en-US"> Control</span><span lang="zh-CN">键将</span><span lang="en-US">File's  Owner</span><span lang="zh-CN">图标拖到</span><span lang="en-US">Portrait</span><span lang="zh-CN">图标和</span><span lang="en-US">Landscape</span><span lang="zh-CN">图标。分别选择</span><span lang="en-US">landscape</span><span lang="zh-CN">和</span><span lang="en-US">portrait</span><span lang="zh-CN">输出口。</span><span lang="en-US"> </span><span lang="zh-CN">然后按</span><span lang="en-US">Control</span><span lang="zh-CN">键将</span><span lang="en-US">File's  Owner </span><span lang="zh-CN">拖放到</span><span lang="en-US">Portrait</span><span lang="zh-CN">选择</span><span lang="en-US">View</span><span lang="zh-CN">输出口——这是启动时的视图。</span></p>
+<p><span lang="zh-CN">打开</span><span lang="en-US">Landscape</span><span lang="zh-CN">并修改高宽从</span><span lang="en-US">460</span><span lang="zh-CN">、</span><span lang="en-US">320</span><span lang="zh-CN">改为</span><span lang="en-US">300</span><span lang="zh-CN">、</span><span lang="en-US">480</span><span lang="zh-CN">。添加两个</span><span lang="en-US">Round Rect  Button</span><span lang="zh-CN">到视图中。改名左侧的为</span><span lang="en-US">Foo</span><span lang="zh-CN">，右边改名为</span><span lang="en-US">Bar</span></p>
+<p><span lang="zh-CN">绑定按钮输出口。</span><span lang="en-US">Control</span><span lang="zh-CN">键将</span><span lang="en-US">File's Owner</span><span lang="zh-CN">拖到</span><span lang="en-US">Foo</span><span lang="zh-CN">和</span><span lang="en-US">Bar</span><span lang="zh-CN">按钮绑定</span><span lang="en-US">landscapeFoo</span><span lang="zh-CN">和</span><span lang="en-US">landscapeBar</span><span lang="zh-CN">窗口。选择</span><span lang="en-US">Foo</span><span lang="zh-CN">按钮通过连接检查器连到</span><span lang="en-US">File's  Owner</span><span lang="zh-CN">绑定</span><span lang="en-US">buttonPressed:</span><span lang="zh-CN">动作。重复绑定</span><span lang="en-US"> Bar</span><span lang="zh-CN">按钮。关闭</span><span lang="en-US">Landscape</span><span lang="zh-CN">视图。</span></p>
+<p><span lang="zh-CN">打开</span><span lang="en-US">Portrait</span><span lang="zh-CN">，添加按钮</span><span lang="en-US">Foo</span><span lang="zh-CN">和</span><span lang="en-US">Bar</span><span lang="zh-CN">，同样绑定输出口和动作。保存</span><span lang="en-US">nib</span><span lang="zh-CN">退出。</span></p>
+<p><span lang="zh-CN">编写代码交换过程和点击动作。修改</span><span lang="en-US">SwapViewController.m</span></p>
+<p lang="en-US">…</p>
+<p lang="en-US">@implementation???  SwapViewController</p>
+<p lang="en-US">@synthesize??? landscape;</p>
+<p lang="en-US">@synthesize??? portrait;</p>
+<p lang="en-US">@synthesize???  landscapeFooButton;</p>
+<p lang="en-US">@synthesize???  portraitFooButton;</p>
+<p lang="en-US">@synthesize???  landscapeBarButton;</p>
+<p lang="en-US">@synthesize???  portraitBarButton;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(void)willAnimateFirstHalfOfRotationToInterfaceOrientation:???????????? //</span><span lang="zh-CN">在旋转开始后和旋转发生前调用，动画前</span><span lang="en-US">????????????????????????? </span><span lang="zh-CN">半部分。目标方向</span></p>
+<p lang="en-US">(UIInterfaceOrientation)toInterfaceOrientation</p>
+<p lang="en-US">duration:(NSTimeInterval)duration {</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?if  (toOrientation==UIInterfaceOrientationPortrait)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?self.view = self.portrait;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformIdentify;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformMakeRotation(degressToRadian(0));</p>
+<p lang="en-US">?self.view.bounds =  CGRectMake(0.0,0.0,300.0,480.0);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else if (toOrientation ==  UIInterfaceOrientationLandscapeLeft)</p>
+<p lang="en-US">?{</p>
+<p lang="en-US">?self.view = self.landscape;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformIdentity;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransfromMakeRotation(degreesToRadian(-90));</p>
+<p lang="en-US">?self.view.bounds =  CGRectMake(0.0,0.0,460.0,320.0);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else if (toOrientation ==  UIInterfaceOrientationPortraitUpsideDown)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?self.view = self.portrait;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformIdentity;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformMakeRotation(degreesToRadian(180));</p>
+<p lang="en-US">?self.view.bounds =  CGRectMake(0.0,0.0,300.0,480.0);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else if (toOrientation ==  UIInterfaceOrientationLandscapeRight)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?self.view = self.landscape;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformIdentity;</p>
+<p lang="en-US">?self.view.transform =  CGAffineTransformMakeRotation(degreesToRadian(90));</p>
+<p lang="en-US">?self.view.bounds =  CGRectMake(0.0,0.0,460.0,320.0);</p>
+<p lang="en-US">}</p>
+<p lang="en-US">}</p>
+<p><span lang="en-US">-(IBAction)buttonPressed:(id)sender  {??????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">按下按钮后隐藏并将另一视图相应按钮</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?if (sender ==  portraitFooButton || sender == landscapeFooButton)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">portraitFooButton.hidden = YES;</p>
+<p lang="en-US">landscapeFooButton.hidden = YES:</p>
+<p lang="en-US">}</p>
+<p lang="en-US">else</p>
+<p lang="en-US">{</p>
+<p lang="en-US">portraitBarButton.hidden = YES;</p>
+<p lang="en-US">landscapeBarButton.hidden = YES:</p>
+<p lang="en-US">}</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(BOOL)shouldAutorotateToInterfaceOrientation:</p>
+<p lang="en-US">(UIInterfaceOrientation)interfaceOrientation {</p>
+<p lang="en-US">// Return YES for supported orientations</p>
+<p lang="en-US">// return (interfaceOrientation =  UIInterfaceOrientationPortrait);</p>
+<p><span lang="en-US">?return YES;???????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">支持到任何方向</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">……</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[landscape release];</p>
+<p lang="en-US">[portrait release];</p>
+<p lang="en-US">[landscapeFooButton release];</p>
+<p lang="en-US">[landscapeBarButton? release];</p>
+<p lang="en-US">[portraitFooButton? release];</p>
+<p lang="en-US">[portraitBarButton release];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">注意</span><span lang="zh-CN">因为用到</span><span lang="en-US">Core  Graphics</span><span lang="zh-CN">框架</span><span lang="zh-CN">中的方法</span><span lang="en-US"> CGAffineTransformMakeRotation</span><span lang="zh-CN">。需要</span><span lang="zh-CN">导入</span><span lang="en-US"> Groups &amp; Files</span><span lang="zh-CN">——</span><span lang="en-US">Frameworks</span><span lang="zh-CN">内。</span><span lang="en-US"> </span><span lang="zh-CN">菜单</span><span lang="en-US">Project</span><span lang="zh-CN">——</span><span lang="en-US">Add to Project </span><span lang="zh-CN">选择需要的框架</span><span lang="en-US">?  Existing Frameworks...</span></p>
+<p><span lang="zh-CN">如何查找方法</span><span lang="en-US"> </span><span lang="zh-CN">双击函数名称，出现下拉箭头后选</span><span lang="en-US">Jump to Definition,</span><span lang="zh-CN">定位到了定义函数的头文件。在顶部找到所属的框架。找到后才可添加。</span></p>
+<p lang="en-US">&nbsp;</p>
+<p>如何查找所需框架版本——</p>
+<p>&nbsp;</p>
+<p align="center"><a href="iPhoneStudy1.html">转第1页</a>   <a href="iPhoneStudy3.html">转第3页</a></p>
+</body>
+</html>

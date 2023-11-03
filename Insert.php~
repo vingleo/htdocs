@@ -1,0 +1,39 @@
+<HTML>
+<meta http-equiv="content-type" content="text/html;charset=GBK" />
+<BODY>
+<hr />
+<?php
+$db = mysql_connect("sql311.byethost12.com","b12_6588581","827097");
+mysql_query("SET NAMES 'GBK'");
+mysql_select_db("b12_6588581_disc_info");
+$did=$_POST['disc_id'];
+$dc=$_POST['content'];
+$dcid=$_POST['class_id'];
+$dr=$_POST['remark'];
+
+//echo  $_POST["disc_id"];
+
+if(empty($did)||empty($dc)||empty($dcid)||empty($dr))
+{
+
+    echo "请输入完整";
+
+}
+else
+{
+
+$sql="INSERT INTO mix(Disc_ID,Content,Class_ID,Remark) VALUES('".$_POST[disc_id]."','".$_POST[content]."','".$_POST[class_id]."','".$_POST[remark]."')";
+$result=mysql_query($sql,$db);
+if(!$result)
+  {
+	die('对不起，插入失败!'. mysql_error());
+  }
+else
+  {
+echo "1条记录插入成功";
+  }
+mysql_close($db);
+}
+?>
+</BODY>
+</HTML>

@@ -1,0 +1,531 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>vingleo的iPhone开发笔记</title>
+<style type="text/css">
+<!--
+body {
+	background-color: #999999;
+}
+.STYLE2 {
+	font-size: xx-large;
+	font-family: "宋体";
+	font-weight: bold;
+	color: #9900CC;
+}
+-->
+</style></head>
+
+<body>
+<p class="STYLE2">vingleo的iPhone开发笔记（4）</p>
+<p><span lang="zh-CN">第七章</span><span lang="en-US">? </span><span lang="zh-CN">标签栏与选取器</span></p>
+<p><span lang="zh-CN">目标：</span><span lang="en-US">5</span><span lang="zh-CN">个不同的图标和标签和</span><span lang="en-US">5</span><span lang="zh-CN">个不同内容视图</span><span lang="en-US">? </span><span lang="zh-CN">利用</span><span lang="en-US">Picker View</span><span lang="zh-CN">选取器可以选取一个或多个刻度盘可以选文本或图像</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">创建一个</span><span lang="en-US">Pickers</span><span lang="zh-CN">程序</span></p>
+<p><span lang="zh-CN">视图</span><span lang="en-US">1</span><span lang="zh-CN">——日期选取器（</span><span lang="en-US">date picker</span><span lang="zh-CN">）、按钮→弹出警告显示选择的日期</span></p>
+<p><span lang="zh-CN">视图</span><span lang="en-US">2</span><span lang="zh-CN">——选择一组值</span><span lang="en-US"> </span><span lang="zh-CN">→利用委托和数据源指定</span></p>
+<p><span lang="zh-CN">视图</span><span lang="en-US">3</span><span lang="zh-CN">——两个独立的滚轮→利用数据源和委托提供两个独立的数据列表，互不影响</span></p>
+<p><span lang="zh-CN">视图</span><span lang="en-US">4</span><span lang="zh-CN">——两个有关联的滚轮→左边选州，右边选</span><span lang="en-US">ZIP</span></p>
+<p><span lang="zh-CN">视图</span><span lang="en-US">5</span><span lang="zh-CN">——添加</span><span lang="en-US">5</span><span lang="zh-CN">个图像选取器、</span><span lang="en-US">Spin</span><span lang="zh-CN">按钮提供随机数→出现三个一样的出现提示</span></p>
+<p>&nbsp;</p>
+<p>委托和数据源</p>
+<p><span lang="zh-CN">选取器有个代理（</span><span lang="en-US">Picker delegate</span><span lang="zh-CN">）</span><span lang="en-US"> </span><span lang="zh-CN">选取器数据源（</span><span lang="en-US">Picker  datasource</span><span lang="zh-CN">）</span></p>
+<p>选取器将部分工作分配给委托——每个组件的每行绘制内容</p>
+<p>数据源——其方法在指定时间被调用。获取组件数和每个行数。</p>
+<p>这个两个未指定无法工作或不能绘制，一般是同一个对象。同时是包含选取器的视图的视图控制器</p>
+<p>每个内容窗格的视图控制器都是所包含的选取器的数据源和委托</p>
+<p>注意这里的数据源是视图控制器的一部分</p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">例子</span><span lang="en-US">Pickers</span><span lang="en-US">? </span><span lang="zh-CN">从头构建模板，新项目——</span><span lang="en-US">Window-Based Application</span><span lang="zh-CN">取名</span><span lang="en-US">Pickers</span></p>
+<p><span lang="zh-CN">创建根视图控制器→</span><span lang="en-US">Ib</span><span lang="zh-CN">中创建实例</span></p>
+<p><span lang="en-US">Xcode</span><span lang="zh-CN">创建</span><span lang="en-US">5</span><span lang="zh-CN">个新类——</span><span lang="en-US">5</span><span lang="zh-CN">个视图控制器</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">选择从文件创建</span><span lang="en-US">Cocoa Touch Classes</span><span lang="zh-CN">→</span><span lang="en-US">UIViewController? subclass </span><span lang="zh-CN">→创建</span><span lang="en-US"> DatePickerViewController.m</span><span lang="zh-CN">和</span><span lang="en-US">.h</span><span lang="zh-CN">、</span></p>
+<p><span lang="en-US">SingleComponentPickerViewController.m</span><span lang="zh-CN">和</span><span lang="en-US">.h</span><span lang="zh-CN">、</span><span lang="en-US">DoubleComponentPickerViewController.m</span><span lang="zh-CN">和</span><span lang="en-US">.h</span><span lang="zh-CN">、</span><span lang="en-US">DependentComponentPickerViewController.m</span><span lang="zh-CN">和</span><span lang="en-US">.h</span><span lang="zh-CN">、</span><span lang="en-US">CutomPickerViewController.m</span><span lang="zh-CN">和</span><span lang="en-US">.h? </span><span lang="zh-CN">到</span><span lang="en-US">Classes</span><span lang="zh-CN">目录</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">选择从文件创建</span><span lang="en-US">User Interfaces</span><span lang="zh-CN">→</span><span lang="en-US">View XIB</span><span lang="zh-CN">→创建</span><span lang="en-US">DatePickerViewController.xib</span><span lang="zh-CN">、</span><span lang="en-US">SingleComponentPickerViewController.xib</span><span lang="zh-CN">、</span></p>
+<p><span lang="en-US">DoubleComponentPickerView.xib</span><span lang="zh-CN">、</span><span lang="en-US">DependentComponentPickerView.xib</span><span lang="zh-CN">和</span><span lang="en-US"> CustomPickerView.xib</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">设置内容视图</span><span lang="en-US">nib</span><span lang="zh-CN">文件，确保每个</span><span lang="en-US">nib</span><span lang="zh-CN">文件指向正确的</span><span lang="en-US">File's  Owner</span><span lang="zh-CN">图标，文件所有者必须是</span><span lang="en-US">UIViewController</span><span lang="zh-CN">子类</span></p>
+<p><span lang="zh-CN">例如修改</span><span lang="en-US">DatePickerView.xib????????? </span><span lang="zh-CN">控制器类为</span><span lang="en-US">DatePickerViewController? </span><span lang="zh-CN">单击</span><span lang="en-US">File's Owner </span><span lang="zh-CN">→</span><span lang="en-US">apple +</span><span lang="en-US"> 4 </span><span lang="zh-CN">将类改为</span><span lang="en-US">DatePickerViewController</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">按住</span><span lang="en-US">Control</span><span lang="zh-CN">键将</span><span lang="en-US">File's Owner </span><span lang="zh-CN">拖到</span><span lang="en-US">View</span><span lang="zh-CN">图标，选择</span><span lang="en-US">view</span><span lang="zh-CN">输出口，单击</span><span lang="en-US">View</span><span lang="zh-CN">图标后用</span><span lang="en-US">apple+</span><span lang="en-US">3 </span><span lang="zh-CN">修改视图高度</span><span lang="en-US">411</span><span lang="en-US">.</span><span lang="zh-CN">保存关闭</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">重复以上所有</span><span lang="en-US">nib</span><span lang="zh-CN">文件修改</span></p>
+<p>&nbsp;</p>
+<p>添加根视图控制图——使用自己编写的控制器类</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">中创建根视图控制器——</span><span lang="en-US">UITabBarController</span><span lang="zh-CN">实例。</span><span lang="en-US"> </span><span lang="zh-CN">先声明输出口，修改</span><span lang="en-US">PickersAppDelegate.h</span><span lang="zh-CN">类</span></p>
+<p lang="en-US">#import &lt;UIKit/UIKit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@class PickersViewController;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface?  PickersAppDelegate: NSObject?  &lt;UIApplicationDelegate&gt; {</p>
+<p lang="en-US">IBOutlet?  UIWindow? *window;</p>
+<p lang="en-US">IBOutlet? UITabBarController? *rootController;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@property (nonatomic, retain) UIWindow? *window;</p>
+<p lang="en-US">@property(nonatomic,? retain) UITabBarController? *rootController;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">修改</span><span lang="en-US">PickersAppDelegate.m </span><span lang="zh-CN">代码</span></p>
+<p lang="en-US">#import &quot;PickersAppDelegate.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation PickersAppDelegate</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@synthesize window;</p>
+<p lang="en-US">@synthesize? rootController;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(void)applicationDidFinishLauching:(UIApplication  *)application {</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">//Override point for customization after app launch</p>
+<p lang="en-US">[window? addSubview:rootController.view];</p>
+<p lang="en-US">[window?  makeKeyAndVisible];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[rootController release];</p>
+<p lang="en-US">[window release];</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">标签栏的图标——添加所有用到的标签到</span><span lang="en-US">Resource</span><span lang="zh-CN">目录，图标</span><span lang="en-US">24  X 24</span><span lang="zh-CN">像素的</span><span lang="en-US">.png</span><span lang="zh-CN">，具有透明背景。建议浅灰色，</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">用</span><span lang="en-US">IB</span><span lang="zh-CN">打开</span><span lang="en-US">MainWindow.xib</span><span lang="zh-CN">，拖放</span><span lang="en-US">Tab Bar Controller</span><span lang="zh-CN">到</span><span lang="en-US">nib</span><span lang="zh-CN">主窗口，修改</span><span lang="en-US">Tab Bar Controller</span><span lang="zh-CN">属性——</span><span lang="en-US">View</span></p>
+<p><span lang="en-US">?Controller</span><span lang="zh-CN">部分。每个标签有一个视图控制器。添加到</span><span lang="en-US">5</span><span lang="zh-CN">个控制器。</span></p>
+<p><span lang="zh-CN">选中最左侧标签对应的控制器，注意外观。并将每个标签的视图控制器同合适的</span><span lang="en-US">nib</span><span lang="zh-CN">绑定。保留</span><span lang="en-US">Title</span><span lang="zh-CN">→空白</span><span lang="en-US">(</span><span lang="zh-CN">标签控制器不使用</span><span lang="en-US">)</span><span lang="zh-CN">，</span><span lang="en-US"> NIB Name</span><span lang="zh-CN">→</span><span lang="en-US">DatePickerView</span><span lang="zh-CN">。不要加</span><span lang="en-US">.xib</span><span lang="zh-CN">扩展名</span></p>
+<p><span lang="zh-CN">用</span><span lang="en-US">apple +</span><span lang="en-US"> 4 </span><span lang="zh-CN">打开这个标签的身份检查器，类→</span><span lang="en-US">DatePickerViewController,</span></p>
+<p><span lang="zh-CN">通过点击标签栏选中标签栏本身操作——第一次为</span><span lang="en-US">5</span><span lang="zh-CN">个视图控制器之一，第二次点击才是</span></p>
+<p><span lang="zh-CN">设置标题</span><span lang="en-US">Title</span><span lang="zh-CN">：</span><span lang="en-US">Item 1? </span><span lang="zh-CN">→</span><span lang="en-US"> Date</span><span lang="zh-CN">，</span></p>
+<p><span lang="en-US">????????????????? Image</span><span lang="zh-CN">：</span><span lang="en-US"> clockicon.png</span></p>
+<p><span lang="zh-CN">重复其余</span><span lang="en-US">4</span><span lang="zh-CN">个标签栏视图控制器</span></p>
+<p><span lang="zh-CN">第二个控制器标题</span><span lang="en-US"> </span><span lang="zh-CN">：</span><span lang="en-US">Single;??  nib</span><span lang="zh-CN">：</span><span lang="en-US">SingleComponentPicker</span><span lang="en-US">View; Class</span><span lang="zh-CN">→</span><span lang="en-US">SingleComponentPickerViewController; </span><span lang="zh-CN">第二个标签栏标题：</span><span lang="en-US">Single</span><span lang="zh-CN">，</span><span lang="en-US"> </span><span lang="zh-CN">图标</span><span lang="en-US">singleicon.png</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第三个控制器标题：</span><span lang="en-US">Double</span><span lang="zh-CN">；</span><span lang="en-US">nib</span><span lang="zh-CN">：</span><span lang="en-US">DoubleComponentPickerView</span><span lang="zh-CN">；</span><span lang="en-US">Class</span><span lang="zh-CN">→</span><span lang="en-US">DoubleComponentPickerViewController</span><span lang="zh-CN">；第三个标签栏标题：</span><span lang="en-US">Double</span><span lang="zh-CN">，图标</span><span lang="en-US">doubleicon.png</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第四个控制器标题：</span><span lang="en-US">Dependent</span><span lang="zh-CN">；</span><span lang="en-US">nib:DependentComponentPickerView; Class</span><span lang="zh-CN">→</span><span lang="en-US">DependentComponentPickerViewcontroller;</span><span lang="zh-CN">第四个标签栏标题：</span><span lang="en-US">Dependent</span><span lang="zh-CN">，图标：</span><span lang="en-US">dependenticon.png</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第五个控制器标题：</span><span lang="en-US">Custom</span><span lang="zh-CN">；</span><span lang="en-US"> nib</span><span lang="zh-CN">：</span><span lang="en-US">CustomPickerView</span><span lang="zh-CN">；</span><span lang="en-US">class</span><span lang="zh-CN">→</span><span lang="en-US">CustomPickerViewController</span><span lang="zh-CN">；</span><span lang="en-US"> </span><span lang="zh-CN">第五个标签栏标题：</span><span lang="en-US">Custom</span><span lang="zh-CN">；图标：</span><span lang="en-US">toolicon.png</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">确定</span><span lang="en-US">Pickers App Delegate</span><span lang="zh-CN">的输出口</span><span lang="en-US"> </span><span lang="zh-CN">，</span><span lang="en-US"> </span><span lang="zh-CN">按住</span><span lang="en-US">Control </span><span lang="zh-CN">将</span><span lang="en-US">Pickers App Delegate</span><span lang="zh-CN">图标拖放到</span><span lang="en-US">Tab Bar Controller</span><span lang="zh-CN">图标选</span><span lang="en-US">rootController</span><span lang="zh-CN">。保存</span></p>
+<p>用来衔接标签栏和内容视图。</p>
+<p>&nbsp;</p>
+<p>下面就是逐渐实现各个视图：</p>
+<p><span lang="zh-CN">第一步实现日期选取器</span><span lang="zh-CN">——要输出口：从日期选取器取值和操作：由按钮触发并出现警告。</span><span lang="en-US"> </span><span lang="zh-CN">显示日期值。</span></p>
+<p><span lang="zh-CN">修改</span><span lang="en-US">DatePickerViewcontroller.h</span></p>
+<p lang="en-US">#import &lt;UIKit/UIkit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface?  DatePickerViewController? :  UIViewController? {</p>
+<p lang="en-US">IBOutlet????  UIDatePicker?????? *datePicker;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property (nonatomic,retain) UIDatePicker?? *datePicker;</p>
+<p lang="en-US">-(IBAction)buttonPressed;</p>
+<p lang="en-US">@end;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">修改</span><span lang="en-US"> DatePickerView.xib</span></p>
+<p><span lang="zh-CN">添加一个</span><span lang="en-US">Date Picker</span><span lang="zh-CN">到</span><span lang="en-US">View</span><span lang="zh-CN">窗口，放在顶部，选中后</span><span lang="en-US">apple  +</span><span lang="en-US"> 1 </span><span lang="zh-CN">打开属性设置时间范围</span><span lang="en-US">Minimun</span><span lang="zh-CN">→</span><span lang="en-US"> 1/1/1900?  Maximum</span><span lang="zh-CN">→</span><span lang="en-US">12/31/2200</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">放置</span><span lang="en-US">Round Rect Button</span><span lang="zh-CN">到日期选取器下。修改标题→</span><span lang="en-US">Select?????????? apple +</span><span lang="en-US"> 2 </span><span lang="zh-CN">设置连接，</span><span lang="en-US"> Touch Up  Inside</span><span lang="zh-CN">→</span><span lang="en-US">File's Owner</span><span lang="zh-CN">→选</span><span lang="en-US">buttonPressed</span><span lang="zh-CN">。</span><span lang="en-US">? </span><span lang="zh-CN">按住</span><span lang="en-US">Control </span><span lang="zh-CN">将</span><span lang="en-US">File's Owner</span><span lang="zh-CN">拖到日期选取器，选中</span><span lang="en-US">datePicker</span><span lang="zh-CN">输出口。</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">实现</span><span lang="en-US">DatePickerViewController,? </span><span lang="zh-CN">编辑</span><span lang="en-US">DatePickerViewController.m</span></p>
+<p lang="en-US">#import &quot;DatePickerViewController.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation DatePickerViewController</p>
+<p lang="en-US">@synthesize??  datePicker;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(id)initWithNibName:(NSString *)nibNameOrNil</p>
+<p lang="en-US">Bundle:(NSBundle *) nibBundleOrNil {</p>
+<p lang="en-US">?if (self =  [super initWithNibName:nibNameOrNil???  bundle:nibBundleOrNil])</p>
+<p lang="en-US">{</p>
+<p lang="en-US">// Initialization?  code</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?return self;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)buttonPressed {</p>
+<p><span lang="en-US">NSDate *selectecd =  [datePicker date];???? </span><span lang="en-US">?//</span><span lang="zh-CN">从日期选取器获取当前日期值</span></p>
+<p><span lang="en-US">NSString *message =  [[NSString alloc] initWithFormat:??? </span><span lang="en-US">?//</span><span lang="zh-CN">根据日期构造一个字符串</span></p>
+<p lang="en-US">@&quot;The date and time you selected is :? %@&quot;, selected];</p>
+<p><span lang="en-US">UIAlertView? *alert = [[UIAlertView alloc]???? </span><span lang="en-US">?//</span><span lang="zh-CN">使用字符串显示警告</span></p>
+<p lang="en-US">initWithTitle:@&quot;Date and Time Selected&quot;</p>
+<p lang="en-US">message:message</p>
+<p lang="en-US">delegate:nil</p>
+<p lang="en-US">cancelButtonTitle:@&quot;Yes, I did.&quot;</p>
+<p lang="en-US">otherButtonTitles:nil];</p>
+<p lang="en-US">[alert show];</p>
+<p lang="en-US">[alert release];</p>
+<p lang="en-US">[message release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(void)viewDidLoad {</p>
+<p><span lang="en-US">NSDate? *now = [[NSDate alloc] init];? </span><span lang="en-US">?//</span><span lang="zh-CN">创建一个新</span><span lang="en-US">NSDate</span><span lang="zh-CN">对象，此对象包含当前日期和时间</span></p>
+<p><span lang="en-US">[datePicker setDate:now  animated:YES];? </span><span lang="en-US">//</span><span lang="zh-CN">将</span><span lang="en-US">datePickerf</span><span lang="zh-CN">设置为该日期。确保每次加载都会重置当前日期和时间</span></p>
+<p lang="en-US">[now release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">……</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[datePicker release];</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p>编译运行即可</p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">第二步实现单个组件选取器</span><span lang="zh-CN">——从一组值中进行选择。创建一个</span><span lang="en-US">NSArray</span><span lang="zh-CN">保存值。选取器不保存数据。调用数据源和委托方法获取值。数据可以来自静态列表或文件和</span><span lang="en-US">URL</span><span lang="zh-CN">载入。可以随时组合或计算</span></p>
+<p><span lang="zh-CN">声明输出口和操作，修改</span><span lang="en-US">SingleComponentPickerViewController.h</span></p>
+<p lang="en-US">#import &lt;UIKit/Uikit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface?  SingleComponentPickerViewController?  : UIViewController</p>
+<p><span lang="en-US">?&lt;UIPickerViewDelegate,UIPickerViewDataSource&gt;  {? </span><span lang="en-US">?//</span><span lang="zh-CN">控制器类要符合这两个协议</span></p>
+<p lang="en-US">IBOutlet??  UIPickerView?? *singlePicker;</p>
+<p lang="en-US">NSArray??  *pickerData;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@property?  (nonatomic, retain) UIPickerView *singlePicker;</p>
+<p lang="en-US">@property?  (nonatomic, retain)? NSArray  *pickerData;</p>
+<p lang="en-US">-(IBAction)buttonPressed;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">修改</span><span lang="en-US">SingleComponentPickerView.xib </span><span lang="zh-CN">添加一个</span><span lang="en-US">Picker View</span><span lang="zh-CN">到</span><span lang="en-US"> </span><span lang="zh-CN">标签栏第二个标签的内容视图</span><span lang="en-US">View</span><span lang="zh-CN">中，</span></p>
+<p><span lang="zh-CN">按住</span><span lang="en-US">Control</span><span lang="zh-CN">将</span><span lang="en-US">File's Owner</span><span lang="zh-CN">拖放到选取器视图→选</span><span lang="en-US">SinglePicker</span><span lang="zh-CN">输出</span></p>
+<p><span lang="en-US">Apple +</span><span lang="en-US"> 2 </span><span lang="zh-CN">选连接</span><span lang="en-US">??  DataSource</span><span lang="zh-CN">和</span><span lang="en-US">Delegate </span><span lang="zh-CN">都拖放到</span><span lang="en-US">File's  Owner?? </span><span lang="zh-CN">选取器确定了</span><span lang="en-US">SingleComponentPickerViewController</span><span lang="zh-CN">类的实例是数据源和委托。</span></p>
+<p><span lang="zh-CN">放置</span><span lang="en-US"> Round Rect Button</span><span lang="zh-CN">到视图，标题设置为</span><span lang="en-US">Select,? </span><span lang="zh-CN">连接检查器将</span><span lang="en-US">Touch Up  Inside </span><span lang="zh-CN">拖放到</span><span lang="en-US">File's Owner,</span><span lang="zh-CN">选</span><span lang="en-US">buttonPressed</span><span lang="zh-CN">操作，保存</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">实现数据源和委托</span><span lang="en-US">,</span><span lang="zh-CN">修改</span><span lang="en-US">SingleComponentPickerViewController.m</span></p>
+<p lang="en-US">#import &quot;SingleComponentPickerViewController.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation?  SingleComponentPickerViewController</p>
+<p lang="en-US">@synthesize?????  singlePicker;</p>
+<p lang="en-US">@synthesize?????  pickerData;</p>
+<p lang="en-US">……</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)buttonPressed</p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">NSInteger??? row = [singlePicker? selectedRowInComponet:0];?? </span><span lang="en-US">//</span><span lang="zh-CN">从选取器确定哪一行选中，</span><span lang="en-US">0 </span><span lang="zh-CN">代表多个选取器中的第一个</span></p>
+<p><span lang="en-US">???????  //NSInteger</span><span lang="zh-CN">这个整型，不用</span><span lang="en-US">int</span><span lang="zh-CN">或</span><span lang="en-US">long</span><span lang="zh-CN">是自动选择</span><span lang="en-US">32</span><span lang="zh-CN">位或</span><span lang="en-US">64</span><span lang="zh-CN">位</span></p>
+<p><span lang="en-US">NSString? *selected = [pickerData? objectAtIndex:row];????????????? </span><span lang="en-US">//</span><span lang="zh-CN">从</span><span lang="en-US">pickerData</span><span lang="zh-CN">数组取相应数据</span></p>
+<p lang="en-US">NSString? *title  = [[NSString alloc] initWithFormat:</p>
+<p lang="en-US">@&quot;You selected %@!&quot;, selected];</p>
+<p lang="en-US">UIAlertView?  *alert? = [[UIAlertView alloc]  initWithTitle:title</p>
+<p lang="en-US">message:@&quot;Thank you for choosing.&quot;</p>
+<p lang="en-US">delegate:nil</p>
+<p lang="en-US">cancelButtonTitle:@&quot;You're Welcome&quot;</p>
+<p lang="en-US">?otherButtonTitles:nil];</p>
+<p lang="en-US">[alert show];</p>
+<p lang="en-US">[alert release];</p>
+<p lang="en-US">[title release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(void)viewDidLoad {</p>
+<p lang="en-US">NSArray *array = [[NSArray alloc]  initWithObjects:@&quot;Luke&quot;, @&quot;Leia&quot;,</p>
+<p><span lang="en-US">@&quot;Han&quot;,@&quot;Chewbacca&quot;,@&quot;Artoo&quot;,@&quot;Threepio&quot;,@&quot;Lando&quot;,nil];????? </span><span lang="en-US">?//</span><span lang="zh-CN">创建包含对象的数组，如果用属性表见第</span><span lang="en-US">17</span><span lang="zh-CN">章</span></p>
+<p><span lang="en-US">//</span><span lang="zh-CN">可以用</span><span lang="en-US">/Developer/Applications/Utilities/Property  List Editor.app</span><span lang="zh-CN">或</span><span lang="en-US">Xcode</span></p>
+<p><span lang="en-US">//</span><span lang="zh-CN">中编辑，支持</span><span lang="en-US">NSArray</span><span lang="zh-CN">和</span><span lang="en-US">NSDictionary</span><span lang="zh-CN">的</span><span lang="en-US"> initWithContentsOfFile:</span><span lang="zh-CN">方法</span></p>
+<p><span lang="en-US">?self.pickerData = array;???????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">将数组赋给选取器</span></p>
+<p lang="en-US">[array release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">……</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[singlePicker? release];</p>
+<p lang="en-US">[pickerData? release];</p>
+<p lang="en-US">[super? dealloc];</p>
+<p lang="en-US">}</p>
+<p><span lang="en-US">#pragma??  mark -?? //</span><span lang="zh-CN">编译器指令，分隔符号</span></p>
+<p><span lang="en-US">#pragma? mark Picker Data Source Methods?????????? </span><span lang="en-US">?//</span><span lang="zh-CN">分段符号，下面的两个方法来自</span><span lang="en-US">UIPickerViewDataSource</span><span lang="zh-CN">协议</span></p>
+<p><span lang="en-US">-(NSInteger)numberOfComponentsInPickerView:(UIPickerView  *)pickerView? </span><span lang="en-US">//</span><span lang="zh-CN">返回应该显示几个组件，</span><span lang="en-US">UIPickerView</span><span lang="zh-CN">是参数，是哪个</span></p>
+<p><span lang="en-US">//</span><span lang="zh-CN">选取器视图询问</span><span lang="en-US">,</span><span lang="zh-CN">一个视图控制多个选取器</span></p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">return 1;???????????????????????????????????????????????????????????????????????????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">只显示一个列表</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(NSInteger)pickerView:(UIPickerView *)pickerView?????????? </p>
+<p><span lang="en-US">numberOfRowsInComponent:(NSInteger)component??????? </span><span lang="en-US">?//</span><span lang="zh-CN">返回给定组件包含多少行</span><span lang="en-US"> </span><span lang="zh-CN">，</span><span lang="en-US">1</span><span lang="zh-CN">个选取器</span><span lang="en-US">1</span><span lang="zh-CN">个组件</span></p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">return [pickerData  count];???????????????????????????????????????????????????? </span><span lang="en-US">????//</span><span lang="zh-CN">对象计数</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">#pragma mark Picker Delegate  Methods?????? </span><span lang="en-US">?//</span><span lang="zh-CN">下面是委托方法，至少有一个委托方法</span></p>
+<p><span lang="en-US">-(NSString  *)pickerView:(UIPickerView *)pickerView???????????? </span><span lang="en-US">?//</span><span lang="zh-CN">体统指向请求数据的选取器指针</span></p>
+<p><span lang="en-US">titleForRow:(NSInteger)row????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">请求的行</span></p>
+<p><span lang="en-US">forComponent:(NSInteger)component?????????????? </span><span lang="en-US">//</span><span lang="zh-CN">请求的组件</span></p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">?return [pickerData objectAtIndex:row];??????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">只有</span><span lang="en-US">1</span><span lang="zh-CN">个组件</span><span lang="en-US">1</span><span lang="zh-CN">行，忽略</span><span lang="en-US">row</span><span lang="zh-CN">参数以外</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p>编译</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p>第三步实现多个组件选取器——两个无关系独立的滚轮</p>
+<p><span lang="zh-CN">声明输出口和动作</span><span lang="en-US"> </span><span lang="zh-CN">，修改</span><span lang="en-US">DoubleComponentPickerViewController.h</span></p>
+<p lang="en-US">#import &lt;UIKit/UIKit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">#define? kFillingComponent 0??? </span><span lang="en-US">//</span><span lang="zh-CN">定义两个常量，指定</span><span lang="en-US">2</span><span lang="zh-CN">个组件，规律是从左开始组件为</span><span lang="en-US">0</span></p>
+<p lang="en-US">#define?  kBreadComponent 1</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface DoubleComponentPickerViewController? :?  UIViewController</p>
+<p><span lang="en-US">&lt;UIPickerViewDelegate,  UIPickerViewDataSource&gt;??????? </span><span lang="en-US">?//</span><span lang="zh-CN">添加协议</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">IBOutlet???  UIPickerView? *doublePicker;</p>
+<p lang="en-US">NSArray?  *fillingTypes;</p>
+<p lang="en-US">NSArray?  *breadTypes;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property(nonatomic, retain) UIPickerView  *doublePicker;</p>
+<p lang="en-US">@property(nonatomic, retain) NSArray *fillingTypes;</p>
+<p lang="en-US">@property(nonatomic, retain) NSArray *breadTypes;</p>
+<p lang="en-US">-(IBAtcion)buttonPressed;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">修改</span><span lang="en-US">DoubleComponentPickerView.xib</span></p>
+<p><span lang="zh-CN">添加选取器、按钮，创建连接，</span><span lang="en-US">File's Owner </span><span lang="zh-CN">的</span><span lang="en-US">doublePicker</span><span lang="zh-CN">连接到选择器，选取器视图的</span><span lang="en-US">DataSource</span><span lang="zh-CN">和</span><span lang="en-US">Delegate</span><span lang="zh-CN">连接到</span><span lang="en-US">File's  Owner</span></p>
+<p><span lang="zh-CN">按钮的</span><span lang="en-US">Touch Up Inside</span><span lang="zh-CN">连接到</span><span lang="en-US">File's Owner buttonPressed</span><span lang="zh-CN">操作</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">实现控制器，编辑</span><span lang="en-US">DoubleComponetPickerViewController.m</span></p>
+<p lang="en-US">#import  &quot;DoubleComponentPickerViewController.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation?  DoubleComponentPickerViewController</p>
+<p lang="en-US">@synthesize?  doublePicker;</p>
+<p lang="en-US">@synthesize?  fillingTypes;</p>
+<p lang="en-US">@synthesize?  breadTypes;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)buttonPressed</p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">NSInteger? breadRow = [doublePicker?? selectedRowComponent:kBreadComponet]; </span><span lang="en-US">//</span><span lang="zh-CN">指定对应的组件和行号</span></p>
+<p lang="en-US">Nsinteger?  fillingRow =? [doublePicker?? selectedRowComponent:kfillingComponent];</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">NSString *bread =  [breadTypes?  objectAtIndex:breadRow];? </span><span lang="en-US">//</span><span lang="zh-CN">以行号的内容赋给字符串</span></p>
+<p lang="en-US">NSString?  *filling = [fillingTypes?  objectAtIndex:fillingRow];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">NSString?  *message = [[NSString alloc] initWithFormat:</p>
+<p><span lang="en-US">@&quot;You %@ on %@ bread  will be right up.&quot;, filling, bread];? </span><span lang="en-US">//</span><span lang="zh-CN">设定警告信息</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">UIAlertView?  *alert? = [[UIAlertView alloc]  initWithTitle:</p>
+<p lang="en-US">@&quot;Thank you for your order&quot;</p>
+<p lang="en-US">?message:message</p>
+<p lang="en-US">?delegate:nil</p>
+<p lang="en-US">cancelButtonTitle:@&quot;Great!&quot;</p>
+<p lang="en-US">?otherButtonTitles:nil];</p>
+<p lang="en-US">[alert show];</p>
+<p lang="en-US">[alert release];</p>
+<p lang="en-US">[message release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(void)viewDidLoad {??????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">生成两个数组</span></p>
+<p lang="en-US">NSArray *breadArray = [[NSArray alloc]  initWithObjects:@&quot;White&quot;,</p>
+<p lang="en-US">@&quot;Whole Wheat&quot;,@&quot;Rye&quot;,  @&quot;Sourdough&quot;, @&quot;Seven Grain&quot;, nil];</p>
+<p lang="en-US">?self.breadTypes? = breadArray;</p>
+<p lang="en-US">[bread release];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">NSArray *fillingArray?  =? [[NSArray  alloc]initWithObjects:@&quot;Ham&quot;,</p>
+<p lang="en-US">@&quot;Turkey&quot;, @&quot;Peanut Butter&quot;,  @&quot;Tuna Salad&quot;,</p>
+<p lang="en-US">@&quot;Chicken Salad&quot;,@&quot;Roast  Beef&quot;,@&quot;Vegemite&quot;, nil];</p>
+<p lang="en-US">?self.fillingTypes = fillingArray;</p>
+<p lang="en-US">[filling release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">……</p>
+<p lang="en-US">-(void)dealloc {</p>
+<p lang="en-US">[doublePicker release];</p>
+<p lang="en-US">[breadTypes release];</p>
+<p lang="en-US">[fillingTypes release];</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">#pragma mark? -</p>
+<p><span lang="en-US">#pragma mark Picker Data  Source Methods?????? </span><span lang="en-US">?//</span><span lang="zh-CN">数据源方法</span></p>
+<p lang="en-US">-(NSInteger)  numberOfComponentsInPickerView:(UIPickerView *)pickerView </p>
+<p lang="en-US">{</p>
+<p><span lang="en-US">return 2;????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">指定选取器有</span><span lang="en-US">2</span><span lang="zh-CN">个组件</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(NSInteger)pickerView: (UIPickerView *)pickerView</p>
+<p lang="en-US">numberOfRowsInComponent:(NSInteger)component</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?if (component =  kBreadComponent)</p>
+<p lang="en-US">?return  [self.breadTypes count];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?return  [self.fillingTypes count];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">#pragma mark Picker Delegate Methods</p>
+<p lang="en-US">-(NSString *)pickerView:(UIPickerView *)pikcerView</p>
+<p lang="en-US">titleForRow:(NSInteger)row</p>
+<p lang="en-US">forComponent:(NSInteger)component</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?if (component ==  kBreadComponent)</p>
+<p lang="en-US">?return  [self.breadTypes objectAtIndex:row];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?return  [self.fillingTypes objectAtIndex:row];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p>&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">第十一章</span><span lang="en-US">? </span><span lang="zh-CN">持久性数据</span></p>
+<p>目标——应用程序持久存储数据，更改数据时能够保存，重启动程序处于原处。</p>
+<p><span lang="zh-CN">途径——</span><span lang="en-US">3</span><span lang="zh-CN">种主要机制和</span><span lang="en-US">C I/O</span><span lang="zh-CN">调用</span><span lang="en-US">fopen</span><span lang="zh-CN">（）和</span><span lang="en-US">Cocoa</span><span lang="zh-CN">低级文件管理：</span></p>
+<ol type="1">
+  <li value="1">属性列表</li>
+  <li value="2">对象归档</li>
+  <li value="3"><span lang="zh-CN">嵌入式关系数据库</span><span lang="en-US">SQLite3</span></li>
+</ol>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">每个程序有</span><span lang="en-US">/Documents</span><span lang="zh-CN">文件夹并只能读写各自的文件</span></p>
+<p><span lang="zh-CN">用</span><span lang="en-US">Finder</span><span lang="zh-CN">找到</span><span lang="en-US"> </span><span lang="zh-CN">用户主目录</span><span lang="en-US">/ Library(</span><span lang="zh-CN">资源库</span><span lang="en-US">)/Application  Support/iPhoneSimulator/version/</span></p>
+<p><span lang="zh-CN">其中的</span><span lang="en-US">Applications</span><span lang="zh-CN">就是存储应用程序的文件夹。其中的</span><span lang="en-US">.sb</span><span lang="zh-CN">文件包含仿真器</span></p>
+<p><span lang="zh-CN">进入程序目录有</span><span lang="en-US">Documents</span><span lang="zh-CN">、</span><span lang="en-US">Library</span><span lang="zh-CN">和</span><span lang="en-US">tmp</span></p>
+<p><span lang="zh-CN">程序数据存储在</span><span lang="en-US">Documents</span><span lang="zh-CN">中，</span><span lang="en-US"> </span><span lang="zh-CN">基于</span><span lang="en-US">NSUserDefaults</span><span lang="zh-CN">的首选项存储在</span><span lang="en-US">Library/Preferences</span></p>
+<p><span lang="en-US">tmp</span><span lang="zh-CN">内的文件不需要时，</span><span lang="en-US"> </span><span lang="zh-CN">应用程序需要负责删除。</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">获取</span><span lang="en-US">Documents</span><span lang="zh-CN">目录</span><span lang="zh-CN">——如何检索</span><span lang="en-US">Documents</span><span lang="zh-CN">目录的完整路径</span></p>
+<p><span lang="zh-CN">利用</span><span lang="en-US">NSSearchPathForDirectoriesInDomain? </span><span lang="zh-CN">这个</span><span lang="en-US">C</span><span lang="zh-CN">函数来搜索，</span><span lang="en-US"> </span><span lang="zh-CN">其不返回任何值。因为这个位置不存在</span><span lang="en-US">iPhone</span><span lang="zh-CN">的</span><span lang="en-US">Downloads</span><span lang="zh-CN">文件夹内，</span><span lang="en-US"> </span><span lang="zh-CN">或者不能访问该位置权限</span></p>
+<p>&nbsp;</p>
+<p lang="en-US">NSArray? *paths =  NSSearchPathForDirectoresInDomains(NSDocumentDirectory,  NSUserDomainMask, YES);</p>
+<p lang="en-US">NSString *documentsDirectory =  [paths? objectAtIndex:0];?????? </p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">其中</span><span lang="en-US">NSDocumentDirectory? </span><span lang="zh-CN">是查找的</span><span lang="en-US">Documents</span><span lang="zh-CN">路径</span></p>
+<p><span lang="en-US">????????  NSUserDomainMask? </span><span lang="zh-CN">是仅搜索应用程序沙盒</span><span lang="en-US">? </span><span lang="zh-CN">（</span><span lang="en-US">Mac OS</span><span lang="zh-CN">中指查找用户主目录）</span></p>
+<p><span lang="zh-CN">用索引</span><span lang="en-US">O </span><span lang="zh-CN">来返回</span><span lang="en-US">Documents</span><span lang="zh-CN">目录值</span></p>
+<p>&nbsp;</p>
+<p lang="en-US">NSString?  *filename = [documentsDirectory</p>
+<p lang="en-US">stringByAppendingPathComponent:@&quot;theFile.txt&quot;];</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">这样</span><span lang="en-US"> filename</span><span lang="zh-CN">就有</span><span lang="en-US"> theFile.txt</span><span lang="zh-CN">的完整路径，此文件在应用程序的</span><span lang="en-US">Documents</span><span lang="zh-CN">目录</span></p>
+<p>&nbsp;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">获取</span><span lang="en-US">tmp</span><span lang="zh-CN">目录——通过</span><span lang="en-US">NSTemporaryDirectory</span><span lang="zh-CN">（）</span><span lang="en-US"> </span><span lang="zh-CN">这个</span><span lang="en-US">Foundation</span><span lang="zh-CN">函数</span></p>
+<p lang="en-US">NSString? *tempPath? = NSTemporaryDirectory();</p>
+<p>在路径结尾加一个文件名</p>
+<p lang="en-US">NSString? *tempFile =  [temppath stringByAppendingPathComponent:@&quot;tempFile.txt&quot;];</p>
+<p lang="en-US">tempFile</p>
+<p lang="en-US">&nbsp;</p>
+<p>存储在一个文件还是多个文件中</p>
+<p><span lang="zh-CN">单个文件</span><span lang="zh-CN">——使用方法</span><span lang="en-US"> </span><span lang="zh-CN">用</span><span lang="en-US"> NSArray </span><span lang="zh-CN">或</span><span lang="en-US">NSDictionary? </span><span lang="zh-CN">以及</span><span lang="en-US"> </span><span lang="zh-CN">设定一个基于某个自定义类的根对象，填充数据，保存时就会将全部内容重新写入文件</span></p>
+<p>缺点：需要全部数据加载到内存中，全部写入文件系统。一点改动也是。不超过几兆</p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">多个文件——使用方法</span><span lang="en-US"> </span><span lang="zh-CN">可以仅加载用户请求的数据，内存不足可以释放</span></p>
+<p>缺点：复杂性大</p>
+<p>&nbsp;</p>
+<ol type="1">
+  <li value="1">属性列表序列化</li>
+</ol>
+<p><span lang="zh-CN">应用程序首选项——通过</span><span lang="en-US">Xcode</span><span lang="zh-CN">或</span><span lang="en-US">Property List Editor</span><span lang="zh-CN">程序编辑字典或数组</span></p>
+<p><span lang="zh-CN">进行序列化的</span><span lang="en-US">O-C</span><span lang="zh-CN">类</span></p>
+<p><span lang="en-US">NSArray</span><span lang="zh-CN">、</span><span lang="en-US">NSMutableArray</span><span lang="zh-CN">、</span><span lang="en-US">NSDictionary</span><span lang="zh-CN">、</span><span lang="en-US">NSMutableDictionary</span><span lang="zh-CN">、</span><span lang="en-US">NSData</span><span lang="zh-CN">、</span><span lang="en-US">NSMutableData</span><span lang="zh-CN">，</span><span lang="en-US">NSString</span><span lang="zh-CN">，</span><span lang="en-US">NSMutableString</span><span lang="zh-CN">，</span><span lang="en-US">NSNumber</span><span lang="zh-CN">，</span><span lang="en-US">NSDate</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">通过对添加到字典或数组实例</span><span lang="en-US"> </span><span lang="zh-CN">调用</span><span lang="en-US"> writeToFile:atomically: </span><span lang="zh-CN">方法编写属性列表</span></p>
+<p><span lang="en-US">[myArray?  writeToFile:@&quot;/some/file/location/output.plist&quot;  atomically:YES];??? </span><span lang="en-US">//atomically </span><span lang="zh-CN">可以先写入辅助文件，</span><span lang="en-US"> </span><span lang="zh-CN">成功后才写入前面</span></p>
+<p><span lang="en-US">//</span><span lang="zh-CN">的第一个路径</span></p>
+<p><span lang="zh-CN">缺点：无法将自定义对象序列化到属性表，不能够使用未指定的其他类如</span><span lang="en-US">NSURL</span><span lang="zh-CN">、</span><span lang="en-US">UIImage</span><span lang="zh-CN">和</span><span lang="en-US">UIColor</span><span lang="zh-CN">类等</span></p>
+<p><span lang="en-US">? </span><span lang="zh-CN">也不能够创建派生或计算的属性，造成应该在模型类的代码到了控制器类</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">属性列表文件例子：</span><span lang="en-US"> </span><span lang="zh-CN">创建一个持久性应用程序</span><span lang="en-US">? </span><span lang="zh-CN">有</span><span lang="en-US"> 4</span><span lang="zh-CN">个文本字段，退出时保留字段到属性列表文件。启动时加载数据</span></p>
+<p><span lang="zh-CN">基于视图——取名</span><span lang="en-US">Persistence</span></p>
+<p><span lang="zh-CN">创建四个文本字段视图——</span><span lang="en-US">Classes</span><span lang="zh-CN">文件夹</span><span lang="en-US"> </span><span lang="zh-CN">，编辑</span><span lang="en-US">PersistenceViewController.h</span></p>
+<p lang="en-US">#import &lt;UIKit/UIKit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">#define?  kFilename????????????????  @&quot;data.plist&quot;?? </span><span lang="en-US">//</span><span lang="zh-CN">定义一个要用到的文件常量</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface?  PersistenceViewControlelr : UIVIewController {</p>
+<p lang="en-US">IBOutlet? UITextField? *field1;</p>
+<p lang="en-US">IBOutlet? UITextField? *field2;</p>
+<p lang="en-US">IBOutlet? UITextField? *field3;</p>
+<p lang="en-US">IBOutlet? UITextField? *field4;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property? (nonatomic,  retain)? UITextField? *field1;</p>
+<p lang="en-US">@property? (nonatomic,  retain)? UITextField? *field2;</p>
+<p lang="en-US">@property? (nonatomic,  retain)? UITextField? *field3;</p>
+<p lang="en-US">@property? (nonatomic,  retain)? UITextField? *field4;</p>
+<p><span lang="en-US">-(NSString? *)dataFilePath;???????????????????????????????????????????????????????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">将</span><span lang="en-US">kFilename</span><span lang="zh-CN">串联到</span><span lang="en-US">Documents</span><span lang="zh-CN">目录的路径实现完整路径</span></p>
+<p><span lang="en-US">-(void)applicationWillTerminate:(NSNOtification  *)notification;??????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">退出程序调用并保存列表文件</span></p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">在</span><span lang="en-US">IB</span><span lang="zh-CN">中编辑</span><span lang="en-US">PersistenceViewController.xib</span></p>
+<p><span lang="zh-CN">打开</span><span lang="en-US">View</span><span lang="zh-CN">窗口，</span><span lang="en-US"> </span><span lang="zh-CN">放入</span><span lang="en-US">1</span><span lang="zh-CN">个</span><span lang="en-US">Text</span><span lang="en-US">Field</span><span lang="zh-CN">并取消属性中的</span><span lang="en-US">Clear When Editing Begins,</span><span lang="zh-CN">用</span><span lang="en-US">Option</span><span lang="zh-CN">键复制</span><span lang="en-US">3</span><span lang="zh-CN">个，注意尽量放顶上，留出空间放键盘，添加</span><span lang="en-US">4</span><span lang="zh-CN">个标签</span><span lang="en-US">Line1-4</span><span lang="zh-CN">，绑定输出口。</span><span lang="en-US"> </span><span lang="zh-CN">按住</span><span lang="en-US">Control </span><span lang="zh-CN">拖动</span><span lang="en-US">File's Owner </span><span lang="zh-CN">放入文本字段选输出口。</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">编辑实现文件</span><span lang="en-US">PersistenceViewController.m</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">#import &quot;PersistenceViewContrller.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation?  PersistenceViewController</p>
+<p lang="en-US">@synthesize? field1;</p>
+<p lang="en-US">@synthesize? field2;</p>
+<p lang="en-US">@synthesize? field3;</p>
+<p lang="en-US">@synthesize? field4;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(NSString *)dataFilePath???????????? </span><span lang="en-US">?//</span><span lang="zh-CN">此方法返回数据文件的完整路径</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">NSArray *paths = NSSearchPathForDirectoriesInDomains(</p>
+<p lang="en-US">NSDocumentDiretory, NSUserDomainMask,YES);</p>
+<p lang="en-US">NSString *documentsDirectory = [paths objectAtIndex:0 ];</p>
+<p><span lang="en-US">return [documentsDirectory?  stringByAppendingPathComponent:kFilename];? </span><span lang="en-US">?//</span><span lang="zh-CN">附加</span><span lang="en-US">kFilename</span><span lang="zh-CN">来执行</span></p>
+<p lang="en-US">} </p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(void)applicationWillTerminate:(NSNotification  *)notification??????????? </span><span lang="en-US">//</span><span lang="zh-CN">这是</span><span lang="zh-CN">通知</span><span lang="zh-CN">方法，使用实例作参数</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">NSMutableArray? *array =  [[NSMutableArray? alloc] init];?? </p>
+<p lang="en-US">[array???  addObject:field1.text];</p>
+<p lang="en-US">[array???  addObject:field2.text];</p>
+<p lang="en-US">[array???  addObject:field3.text];</p>
+<p lang="en-US">[array???  addObject:field4.text];</p>
+<p><span lang="en-US">[array???  writeToFile:[self? dataFilePath]  atomically:YES];</span><span lang="en-US"> //</span><span lang="zh-CN">写入属性列表</span></p>
+<p lang="en-US">[array???? release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">#pragma??? mark? -</p>
+<ul type="disc">
+  <li><span lang="en-US">(void)viewDidLoad       {?????????????? </span><span lang="en-US">//</span><span lang="zh-CN">加载视图时</span><span lang="en-US"> </span><span lang="zh-CN">如果不存在数据文件不加载</span></li>
+</ul>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">NSString? *filePath? = [self?  dataFilePath];</p>
+<p><span lang="en-US">If??  ([[NSFileManager? defaultManager] </span><span lang="en-US">fileExistsAtPath</span><span lang="en-US">:filePath])???????????? </span><span lang="en-US">?//</span><span lang="zh-CN">检查数据文件是否存在</span></p>
+<p lang="en-US">????? {</p>
+<p><span lang="en-US">NSArray *array = [[NSArray alloc]  initWithContentsOfFile:filePath];????? </span><span lang="en-US">//</span><span lang="zh-CN">以文件内容实例化数组</span></p>
+<p><span lang="en-US">field1.text = [array? objectAtIndex:0];?????????????????????????????????????????????? </span><span lang="en-US">????????????//</span><span lang="zh-CN">以数组对象复制</span><span lang="en-US">4</span><span lang="zh-CN">个文本字段</span></p>
+<p><span lang="en-US">field2.text = [array? objectAtIndex:1];????????????????????????????????????????????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">数组是顺序列表，</span><span lang="en-US"> </span><span lang="zh-CN">根据保存顺序来复制数组</span></p>
+<p lang="en-US">field3.text = [array?  objectAtIndex:2];</p>
+<p lang="en-US">field4.text = [array?  objectAtIndex:3];</p>
+<p lang="en-US">[array release];</p>
+<p lang="en-US">?????? }</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">UIApplication? *app? =  [UIApplicatioin? sharedApplication];?????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">应用程序实例引用</span><span lang="en-US">??? </span></p>
+<p lang="en-US">[[NSNotificationCenter?  defaultCenter]? addObserver:self</p>
+<p><span lang="en-US">??  selector:@selector(applicationWillTerminate:)?? </span><span lang="en-US">//</span><span lang="zh-CN">告知通知中心在发布该通知时调用这个方法</span></p>
+<p><span lang="en-US">????????????????????????????????????????????????  name:UIApplicationWillTerminateNotification????????????? </span><span lang="en-US">//</span><span lang="zh-CN">接收的通知的名称</span></p>
+<p><span lang="en-US">???  object:app];?????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">获取通知感兴趣的对象</span><span lang="en-US">??? </span></p>
+<p lang="en-US">[super viewDidLoad];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">…… </p>
+<p lang="en-US">-(void) dealloc? {</p>
+<p lang="en-US">[field1? release];</p>
+<p lang="en-US">[field2? release];</p>
+<p lang="en-US">[field3? release];</p>
+<p lang="en-US">[field4? release];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">主视图完成加载→查找属性列表文件→存在→数据复制到文件字段</span><span lang="en-US"> </span></p>
+<p>程序停止→通知→收集文本字段值→粘贴到可变数组→写入属性列表</p>
+<p>&nbsp;</p>
+<p>模型对象保存设置例子：</p>
+<p><span lang="en-US">NSCoding </span><span lang="zh-CN">和</span><span lang="en-US">NSCopying </span><span lang="zh-CN">协议</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">符合</span><span lang="en-US">NSCoding</span><span lang="zh-CN">的协议声明两个方法，</span><span lang="en-US"> </span><span lang="zh-CN">都传递一个</span><span lang="en-US">NSCode</span><span lang="zh-CN">实例</span></p>
+<ol type="1">
+  <li value="1">将对象编码到归档</li>
+  <li value="2">将归档解码并创建一个新对象</li>
+</ol>
+<p>&nbsp;</p>
+<p align="center"><a href="iPhoneStudy3.html">转第3页</a>   <a href="iPhoneStudy5.html">转第5页</a></p>
+</body>
+</html>

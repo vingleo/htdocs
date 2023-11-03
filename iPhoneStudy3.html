@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>vingleo的iPhone开发笔记</title>
+<style type="text/css">
+<!--
+body {
+	background-color: #999999;
+}
+.STYLE2 {
+	font-size: xx-large;
+	font-family: "宋体";
+	font-weight: bold;
+	color: #9900CC;
+}
+-->
+</style></head>
+
+<body>
+<p class="STYLE2">vingleo的iPhone开发笔记（3）</p>
+<p><span lang="zh-CN">第六章</span><span lang="en-US">? </span><span lang="zh-CN">多视图</span></p>
+<p>&nbsp;</p>
+<p>多视图及多视图控制器</p>
+<p><span lang="zh-CN">多视图应用程序组成方式：</span><span lang="en-US">MainWindow.xib </span><span lang="zh-CN">包含应用程序委托和主窗口以及一个控制器类实例，其管理显示哪个视图。根控制器一般是</span><span lang="en-US">UINavigationController</span><span lang="zh-CN">或</span><span lang="en-US">UITable</span><span lang="en-US">Controller</span><span lang="zh-CN">实例。可以是</span><span lang="en-US">UIViewController</span><span lang="zh-CN">的自定义子类。</span><span lang="zh-CN">根控制器指定是否应该自动旋转到新方向的视图。注意标签栏应用程序除点击标签栏会转到标签栏控制器，其他都是转到当前的内容视图对应的控制器</span></p>
+<p><span lang="zh-CN">视图指的是有类控制器的</span><span lang="en-US">UIView</span><span lang="zh-CN">子类（内容视图）比如</span><span lang="en-US">iPhone</span><span lang="zh-CN">的</span><span lang="en-US">Stock</span><span lang="zh-CN">程序中点击小</span><span lang="en-US">i</span><span lang="zh-CN">就是第二个视图。比如</span><span lang="en-US">Phone</span><span lang="zh-CN">程序中底部有很多按钮，激活新视图控制器显示新视图。</span></p>
+<p>标签栏和工具栏区别：标签栏单选，工具栏可以复选。切换视图用标签栏</p>
+<p>还有使用导航栏控制器便于提供分层信息。也可以同时使用标签栏和导航栏</p>
+<p><span lang="zh-CN">这些使用特定的控制器类，</span><span lang="en-US"> </span><span lang="zh-CN">标签栏——</span><span lang="en-US">UITabBarController</span><span lang="zh-CN">类</span></p>
+<p><span lang="en-US">???????? </span><span lang="zh-CN">导航栏——</span><span lang="en-US">UINavigationController</span><span lang="zh-CN">类</span></p>
+<p><span lang="zh-CN">程序</span><span lang="en-US"> ViewSwitch? </span><span lang="zh-CN">包含三个控制器。</span><span lang="en-US">3</span><span lang="zh-CN">个</span><span lang="en-US">nib</span><span lang="zh-CN">文件和</span><span lang="en-US">1</span><span lang="zh-CN">个应用程序委托</span></p>
+<p><span lang="zh-CN">视图控制器</span><span lang="en-US">1</span><span lang="zh-CN">控制：一个只包含一个按钮的工具栏、蓝色的背景和一个按钮</span></p>
+<p><span lang="zh-CN">视图控制器</span><span lang="en-US">2</span><span lang="zh-CN">控制：黄色背景，按钮名字变化。</span><span lang="en-US">????? </span><span lang="zh-CN">按钮按下有视图名称警告信息</span></p>
+<p><span lang="zh-CN">视图控制器</span><span lang="en-US">3</span><span lang="zh-CN">控制：</span><span lang="en-US">Switch Views</span><span lang="zh-CN">切换</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">每个视图控制器控制一个内容视图。内容视图由视图控制器、</span><span lang="en-US">nib</span><span lang="zh-CN">和一个可选的</span><span lang="en-US">UIView</span><span lang="zh-CN">子类组成。</span><span lang="en-US">UIView</span><span lang="zh-CN">子类可以自定义内容视图的外观和行为。一般实例化控制器类，</span><span lang="en-US"> </span><span lang="zh-CN">并指定一个</span><span lang="en-US">nib</span><span lang="zh-CN">文件名。</span></p>
+<p>&nbsp;</p>
+<p><span lang="zh-CN">创建一个基于</span><span lang="en-US">Window-Based  Application? ViewSwitcher</span><span lang="zh-CN">，</span><span lang="en-US"> </span><span lang="zh-CN">只有</span><span lang="en-US"> </span><span lang="zh-CN">一个窗口和一个应用程序委托。无视图和控制器</span></p>
+<p><span lang="zh-CN">第</span><span lang="en-US">1</span><span lang="zh-CN">步：</span><span lang="en-US"> </span><span lang="zh-CN">创建视图控制器和</span><span lang="en-US">nib</span><span lang="zh-CN">文件</span><span lang="zh-CN">。要先创建所有文件。编辑</span><span lang="en-US">IB</span><span lang="zh-CN">，编写代码。我们可以从</span><span lang="en-US">Cocoa Touch Classes</span><span lang="zh-CN">选择</span><span lang="en-US">UIViewController Subclass</span><span lang="zh-CN">。取名</span><span lang="en-US">SwitchViewController.m , </span><span lang="zh-CN">要选中同时创建</span><span lang="en-US">SwitchViewController.h</span></p>
+<p><span lang="zh-CN">重复创建</span><span lang="en-US">BlueViewController.m </span><span lang="zh-CN">和</span><span lang="en-US">YellowViewController.m </span><span lang="zh-CN">及头文件。由</span><span lang="en-US">SwitchViewController</span><span lang="zh-CN">来切换</span></p>
+<p><span lang="zh-CN">下面是添加</span><span lang="en-US">nib</span><span lang="zh-CN">文件。</span><span lang="en-US"> </span><span lang="zh-CN">选</span><span lang="en-US">Resource</span><span lang="zh-CN">目录，</span><span lang="en-US"> apple+N</span><span lang="zh-CN">——</span><span lang="en-US">iPhone OS </span><span lang="zh-CN">选</span><span lang="en-US">UserInterfaces</span><span lang="zh-CN">——</span><span lang="en-US">View XIB </span><span lang="zh-CN">命名为</span><span lang="en-US">BlueView.xib</span><span lang="zh-CN">和</span><span lang="en-US">YellowView.xib</span></p>
+<p><span lang="zh-CN">第</span><span lang="en-US">2</span><span lang="zh-CN">步：衔接文件</span></p>
+<p><span lang="zh-CN">要从应用程序委托开始更改，</span><span lang="en-US"> View_SwitchAppDelegate.h</span></p>
+<p lang="en-US">…</p>
+<p lang="en-US">//@class??  View_SwitcherViewController;</p>
+<p lang="en-US">@class? SwitchViewController;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface??  View_SwitcherAppDelegate:?  NSObject &lt;UIApplicationDelegate&gt;?  {</p>
+<p lang="en-US">IBOutlet??  UIWindow?? *window;</p>
+<p><span lang="en-US">IBOutlet?? SwitchViewController?? *switchViewController;???????? </span><span lang="en-US">//</span><span lang="zh-CN">根控制器的视图会添加到主窗口，后面会在</span><span lang="en-US">????  //MainWindow.xib</span><span lang="zh-CN">添加一个实例。</span></p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@property (nonatomic,retain) Uiwindow? *window;</p>
+<p lang="en-US">@property (nonatomic,retain) SwitchViewController? *switchViewController;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">将控制器视图添加到应用程序主窗口。修改</span><span lang="en-US">View_SwitcherAppDelegate.m</span></p>
+<p lang="en-US">#import  &quot;View_SwitcherAppDelegate.h&quot;</p>
+<p><span lang="en-US">#import &quot;SwitchViewController.h&quot;???????????????????????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">引入控制器头文件</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation?? View_SwitcherAppDelegate</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@synthesize? window;</p>
+<p><span lang="en-US">@synthesize??  switchViewController;??????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">合成控制器</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(void)applicationDidFinishLauching:  (Uiapplication? *)application {</p>
+<p lang="en-US">//  Override point for customization after app lauch</p>
+<p><span lang="en-US">[window  addSubview:switchViewController.view];???????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">添加根控制器的视图到窗口，要显示出来</span><span lang="en-US">??? //</span><span lang="zh-CN">必须要添加为窗口的子视图</span></p>
+<p lang="en-US">[window makeKeyAndVisible];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(void)dealloc  {</p>
+<p lang="en-US">[window release];</p>
+<p lang="en-US">[switchViewcontroller release];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">[super dealloc];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">3</span><span lang="zh-CN">步：在</span><span lang="en-US">SwitchViewController.h</span><span lang="zh-CN">中添加输出口和动作</span></p>
+<p><span lang="zh-CN">由于需要在两个视图中切换，</span><span lang="en-US"> </span><span lang="zh-CN">需要有个动作方法，</span><span lang="en-US"> </span><span lang="zh-CN">不需要输出口（不在</span><span lang="en-US">nib</span><span lang="zh-CN">中创建），要两个指针。指向要交换的视图控制器</span></p>
+<p lang="en-US">@import  &lt;UIKit/UIKit.h&gt;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@class  BlueViewController;</p>
+<p lang="en-US">@class  YellowViewcontroller;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@interface? SwitchViewController? :?  UIViewController? {</p>
+<p lang="en-US">YellowViewController?  *yellowViewController;</p>
+<p lang="en-US">BlueViewController???  *blueViewController;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">@property  (retain,nonatomic) YellowViewController?  *yellowViewController;</p>
+<p lang="en-US">@property(retian,nonatomic)? BlueViewController????? *blueViewController;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(IBAction)switchViews: (id)sender;??  //</span><span lang="zh-CN">声明了动作</span></p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">4</span><span lang="zh-CN">步：修改</span><span lang="en-US">MainWindow</span><span lang="en-US">.xib</span><span lang="zh-CN">文件</span></p>
+<p><span lang="zh-CN">包含</span><span lang="en-US">4</span><span lang="zh-CN">个按钮：</span><span lang="en-US">File's Owner</span><span lang="zh-CN">、</span><span lang="en-US">First Responder</span><span lang="zh-CN">、</span><span lang="en-US">View_SwitcherAppDelegate</span><span lang="zh-CN">以及</span><span lang="en-US">Window</span></p>
+<p><span lang="zh-CN">还要添加一个根控制器实例，并重命名为</span><span lang="en-US">SwitchViewController.</span><span lang="zh-CN">在</span><span lang="en-US">View Controller</span><span lang="zh-CN">找到子类并拖放进去</span></p>
+<p><span lang="zh-CN">这样会有</span><span lang="en-US">5</span><span lang="zh-CN">个图标，还有一个灰色虚线圆角矩形的</span><span lang="en-US">View</span><span lang="zh-CN">窗口</span><span lang="en-US"> </span><span lang="zh-CN">。下面必须修改视图控制器为</span><span lang="en-US">SwitchViewController</span></p>
+<p><span lang="zh-CN">单击</span><span lang="en-US">View Controller </span><span lang="zh-CN">切换到身份检查器指定</span><span lang="en-US">Class </span><span lang="zh-CN">为</span><span lang="en-US">SwitchViewController</span><span lang="zh-CN">。</span><span lang="en-US"> </span><span lang="zh-CN">这样在</span><span lang="en-US">Class Action</span><span lang="zh-CN">会显示</span><span lang="en-US">switchViews: </span><span lang="zh-CN">动作方法。</span></p>
+<p><span lang="zh-CN">再一步构建根控制器的视图。实现在蓝色视图和黄色视图切换。使用带按钮的工具栏。拖放一个</span><span lang="en-US">View</span><span lang="zh-CN">到窗口</span></p>
+<p><span lang="zh-CN">再添加一个工具栏到底部。更改其中的按钮名称为</span><span lang="en-US">Switch Views</span><span lang="zh-CN">。链接按钮到动作方法。工具栏按钮只相当于</span><span lang="en-US">Touch Up Inside</span><span lang="zh-CN">事件的一个目标动作。单击稍等后再单击确保选中（查看检查器的标题栏为</span><span lang="en-US">Bar Button Item</span><span lang="zh-CN">）</span><span lang="en-US">,</span></p>
+<p><span lang="zh-CN">按</span><span lang="en-US">Control</span><span lang="zh-CN">键拖放按钮到</span><span lang="en-US">Switch View Controller</span><span lang="zh-CN">图标选择</span><span lang="en-US">switchViews</span><span lang="zh-CN">：动作。</span><span lang="en-US">? </span><span lang="zh-CN">注意</span><span lang="zh-CN">不要拖工具栏否则出现的是</span><span lang="en-US">delegate</span><span lang="zh-CN">输出口</span></p>
+<p><span lang="zh-CN">下面需要将</span><span lang="en-US"> SwitchViewController</span><span lang="zh-CN">实例链接到</span><span lang="en-US"> View_SwitchAppDelegate.h</span><span lang="zh-CN">中的输出口。按</span><span lang="en-US">Control</span><span lang="zh-CN">键将</span><span lang="en-US">View_SwitchAppDelegate</span><span lang="zh-CN">拖放到</span><span lang="en-US">Switch View  Controller</span><span lang="zh-CN">图标选</span><span lang="en-US">switchViewController</span><span lang="zh-CN">输出口。保存</span><span lang="en-US">nib</span><span lang="zh-CN">。</span></p>
+<p><span lang="zh-CN">第</span><span lang="en-US">5</span><span lang="zh-CN">步：实现</span><span lang="en-US">SwitchView</span><span lang="en-US">Controller.m?? </span><span lang="zh-CN">编写根视图控制器</span></p>
+<p lang="en-US">#import  &quot;SwitchViewController.h&quot;</p>
+<p lang="en-US">#import  &quot;BlueViewController.h&quot;</p>
+<p lang="en-US">#import  &quot;YellowViewContrller.h&quot;</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@implementation? SwitchViewController</p>
+<p lang="en-US">@synthesize??? blueViewController;</p>
+<p lang="en-US">@synthesize??? yellowViewController;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">-(void)viewDidLoad?????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">覆盖并创建</span><span lang="en-US">BlueViewController</span><span lang="zh-CN">实例</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">BlueViewController???  *blueController = [[BlueViewController?  alloc]</p>
+<p><span lang="en-US">initWithNibName:@&quot;BlueView&quot;? bundle:nil];???????? </span><span lang="en-US">//</span><span lang="zh-CN">加载</span><span lang="en-US">nib</span><span lang="zh-CN">文件，注意不加</span><span lang="en-US">.xib</span><span lang="zh-CN">扩展名</span></p>
+<p><span lang="en-US">?self.blueViewController = blueController;???????? </span><span lang="en-US">//</span><span lang="zh-CN">分配给实例的</span><span lang="en-US">blueViewController</span><span lang="zh-CN">属性</span></p>
+<p><span lang="en-US">[self.view??? insertSubview:blueController.view? atIndex:0];? </span><span lang="en-US">//</span><span lang="zh-CN">插入蓝色视图作为根视图的子视图，索引</span><span lang="en-US">0</span></p>
+<p><span lang="en-US">//</span><span lang="zh-CN">代表放在其他视图之后。这样保证工具栏始终可见</span></p>
+<p><span lang="en-US">[blueController??? release];??????????? </span><span lang="en-US">//</span><span lang="zh-CN">不加入黄色视图是避免用户不点击切换钮浪费资源载入</span></p>
+<p lang="en-US">}</p>
+<p><span lang="en-US">-(IBAction)switchView:(id)sender????????? </span><span lang="en-US">//</span><span lang="zh-CN">在第一次实际需要黄色视图加载——延迟加载</span><span lang="en-US"> lazy loading </span><span lang="zh-CN">降低内存开销</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">// Lazy load? - we load the  Yellow nib the first</p>
+<p lang="en-US">// time the button is pressed</p>
+<p><span lang="en-US">?if (self.yellowViewController == nil)????? </span><span lang="en-US">//</span><span lang="zh-CN">如果属性为</span><span lang="en-US">nil </span><span lang="zh-CN">创建一个</span><span lang="en-US">YellowViewController</span><span lang="zh-CN">实例</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">YellowViewController * yellowController =  [[YellowViewController? alloc]</p>
+<p lang="en-US">initWithNibName:@&quot;YellowView&quot; bundle:nil];</p>
+<p lang="en-US">?self.yellowViewContrller =  yellowController;</p>
+<p lang="en-US">[yellowController? release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">?if (self.blueViewController.view.superview ==  nil)?? </span><span lang="en-US">//</span><span lang="zh-CN">决定显示哪个退出哪个</span></p>
+<p lang="en-US">{</p>
+<p lang="en-US">[yellowViewController.view??  removeFromSuperview];</p>
+<p lang="en-US">[self.view insertSubView:blueViewController.view atIndex:0];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else</p>
+<p lang="en-US">{</p>
+<p lang="en-US">[blueViewController.view???  removeFromSuperview];</p>
+<p lang="en-US">[self.view?  insertSubview:yellowViewController.view?  atIndex:0];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">}</p>
+<p lang="en-US">……</p>
+<p lang="en-US">-(void)dealloc? {</p>
+<p lang="en-US">[yellowViewController?  release];</p>
+<p lang="en-US">[blueViewController??  release];</p>
+<p lang="en-US">[super dealloc]</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">第</span><span lang="en-US">6</span><span lang="zh-CN">步</span><span lang="en-US">? </span><span lang="zh-CN">实现内容视图</span></p>
+<p>创建两个内容视图、各有一个动作方法，由按钮触发，两个视图不需要输出口，两个视图可以用一个类表示</p>
+<p>在每个头文件声明动作方法</p>
+<p lang="en-US">BlueViewController.h</p>
+<p lang="en-US">#import? &lt;UIKit/UIKit.h&gt;</p>
+<p><span lang="en-US">@interface?  BlueViewController:??  UIViewController {?????? </span><span lang="en-US">//</span><span lang="zh-CN">继承自</span><span lang="en-US">UIViewController</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(IBAction)blueButtonPressed:(id)sender;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">YellowViewController.h</p>
+<p lang="en-US">#import  &lt;UIKit/UIkit.h&gt;</p>
+<p lang="en-US">@interface? YellowViewController: UIViewController {</p>
+<p lang="en-US">}</p>
+<p lang="en-US">-(IBAction)yellowButtonPressed:(id)sender;</p>
+<p lang="en-US">@end</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">下面编辑</span><span lang="en-US">BlueView.xib </span><span lang="zh-CN">，</span><span lang="en-US"> </span><span lang="zh-CN">需要制定</span><span lang="en-US">BlueView.xib? </span><span lang="zh-CN">的类是</span><span lang="en-US">BlueViewController </span><span lang="zh-CN">。</span><span lang="en-US"> </span><span lang="zh-CN">单击</span><span lang="en-US">File's Owner </span><span lang="zh-CN">，</span><span lang="en-US"> apple+</span><span lang="en-US">4 </span><span lang="zh-CN">将</span><span lang="en-US">NSObject</span><span lang="zh-CN">更改为</span><span lang="en-US"> BlueViewController</span></p>
+<p><span lang="zh-CN">更改</span><span lang="en-US">nib</span><span lang="zh-CN">中视图的大小，</span><span lang="en-US"> </span><span lang="zh-CN">双击</span><span lang="en-US">View??? </span><span lang="zh-CN">→</span><span lang="en-US"> apple +</span><span lang="en-US"> 3 </span><span lang="zh-CN">→</span><span lang="en-US"> </span><span lang="zh-CN">高度由</span><span lang="en-US">480</span><span lang="zh-CN">改为</span><span lang="en-US">416</span><span lang="zh-CN">（</span><span lang="en-US">480-20-44 </span><span lang="zh-CN">工具栏）</span></p>
+<p><span lang="en-US">Apple+1 </span><span lang="zh-CN">→属性检查器→</span><span lang="en-US">Back</span><span lang="en-US">ground:</span><span lang="zh-CN">蓝色。</span></p>
+<p><span lang="zh-CN">拖出一个</span><span lang="en-US">Round Rect  Button</span><span lang="zh-CN">到窗口，</span><span lang="en-US"> </span><span lang="zh-CN">双击按钮，标题</span><span lang="en-US">Press Me</span></p>
+<p><span lang="en-US">Apple+</span><span lang="en-US">2 </span><span lang="zh-CN">→连接检查器→</span><span lang="en-US"> Touch Up Inside </span><span lang="zh-CN">事件拖放到</span><span lang="en-US">File's Owner </span><span lang="zh-CN">，</span><span lang="en-US"> </span><span lang="zh-CN">连接</span><span lang="en-US">blueButtonPressed:</span><span lang="zh-CN">动作方法</span></p>
+<p><span lang="zh-CN">将</span><span lang="en-US">BlueViewController's  view</span><span lang="zh-CN">输出口连接到</span><span lang="en-US">nib</span><span lang="zh-CN">视图。</span><span lang="en-US"> </span><span lang="zh-CN">因为更改了文件所有者的底层类破坏了现有的输出口</span></p>
+<p><span lang="zh-CN">按住</span><span lang="en-US">Control </span><span lang="zh-CN">将</span><span lang="en-US">File's Owner </span><span lang="zh-CN">拖放到</span><span lang="en-US">View</span><span lang="zh-CN">图标选</span><span lang="en-US">view</span><span lang="zh-CN">输出口。这个输出口是继承自父类</span><span lang="en-US">UIViewController</span><span lang="zh-CN">，</span><span lang="en-US"> </span><span lang="zh-CN">为控制器提供访问所控制的视图</span></p>
+<p><span lang="zh-CN">保存后打开</span><span lang="en-US">YellowView.xib</span><span lang="zh-CN">。</span><span lang="en-US"> </span><span lang="zh-CN">高度：</span><span lang="en-US">416</span><span lang="zh-CN">、</span><span lang="en-US">Bckground: </span><span lang="zh-CN">黄色、</span><span lang="en-US">NSObject</span><span lang="zh-CN">：</span><span lang="en-US">YellowViewController?? </span><span lang="zh-CN">添加按钮：</span><span lang="en-US">Press me,  Too.????????????? Touch Up Inside </span><span lang="zh-CN">：</span><span lang="en-US"> YellowButtonPressed:???????????  File's Owner : view </span><span lang="zh-CN">输出口</span></p>
+<p><span lang="zh-CN">保存</span><span lang="en-US">nib</span></p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">两个动作方法只出现一个警告窗口。</span><span lang="en-US"> </span><span lang="zh-CN">添加到</span><span lang="en-US">BlueViewController.m</span><span lang="zh-CN">实现</span></p>
+<p lang="en-US">#import? &quot;BlueViewController.h&quot;</p>
+<p lang="en-US">@implementation? BlueViewController</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)blueButtonPressed:(id)sender</p>
+<p lang="en-US">{</p>
+<p lang="en-US">UIAlertView? *alert =  [[UIAlertView? alloc]</p>
+<p lang="en-US">initWithTitle:@&quot;Blue View Button Pressed&quot;</p>
+<p lang="en-US">?message:@&quot;You pressed  the button on the blue view&quot;</p>
+<p lang="en-US">delegate:nil</p>
+<p lang="en-US">cancelButtonTitle:@&quot;Yep,I did.&quot;</p>
+<p lang="en-US">otherButtonTitles:nil];</p>
+<p lang="en-US">[alert show];</p>
+<p lang="en-US">[alert release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">……</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">添加到</span><span lang="en-US">YellowViewController.m</span><span lang="zh-CN">实现</span></p>
+<p lang="en-US">#import  &quot;YellowViewController.h&quot;</p>
+<p lang="en-US">@implementation  YellowViewController</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">-(IBAction)yellowButtonPressed:(id)sender</p>
+<p lang="en-US">{</p>
+<p lang="en-US">UIAlertView? *alert =  [[UIAlertView alloc]</p>
+<p lang="en-US">initWithTitle:@&quot;Yellow View Button Pressed&quot;</p>
+<p lang="en-US">message:@&quot;You? pressed  the button on the yellow view&quot;</p>
+<p lang="en-US">delegate:nil</p>
+<p lang="en-US">cancelButtonTitle:@&quot;Yep, I did.&quot;</p>
+<p lang="en-US">otherButtonTitles:nil];</p>
+<p lang="en-US">[alert show];</p>
+<p lang="en-US">[alert release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">……</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">视图转换很生硬，制作转换动画，也就是调用</span><span lang="en-US">UIView</span><span lang="zh-CN">中类方法来指定转换类型和持续时间</span></p>
+<p><span lang="en-US">SwitchViewController.m? </span><span lang="zh-CN">修改</span></p>
+<p lang="en-US">-(IBAction)switchViews:(id)sender</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?if (self.yellowViewController  == nil)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">YellowViewController?  *yellowController = </p>
+<p lang="en-US">[[YellowViewController alloc]</p>
+<p lang="en-US">initWithNibName:@&quot;YellowView&quot;</p>
+<p lang="en-US">bundle:nil];</p>
+<p lang="en-US">?self.yellowViewController =  yellowContrller;</p>
+<p lang="en-US">[yellowController release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">[UIVIew?  beginAnimations:@&quot;View Flip&quot; context:nil];?? </span><span lang="en-US">//</span><span lang="zh-CN">声明一个动画块，翻页效果</span></p>
+<p><span lang="en-US">[UIView setAnimationDuration:1.25];?????????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">持续时间</span></p>
+<p><span lang="en-US">[UIView  setAnimationCurve:UIViewAnimationCurveEaseInOut]; </span><span lang="en-US">?//</span><span lang="zh-CN">设置动画曲线，开始结束慢，中间快</span></p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">?if  (self.blueViewController.view.superview == nil)</p>
+<p lang="en-US">{</p>
+<p lang="en-US">[UIView setAnimationTransition:</p>
+<p><span lang="en-US">UIViewAnimationTransitionFlipFromRight??????????? </span><span lang="en-US">?//</span><span lang="zh-CN">转换类型</span></p>
+<p><span lang="en-US">?forView:self.view cache:YES];?????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">提供缓存快照，加快绘制速度</span></p>
+<p><span lang="en-US">[self.blueViewController? viewWillAppear:YES];??? </span><span lang="en-US">//</span><span lang="zh-CN">两次调用使用到的蓝黄视图</span></p>
+<p lang="en-US">[self.yellowViewController?  viewWillDisappear:YES];</p>
+<p lang="en-US">[self.yellowViewController.view??  removeFromSuperview];</p>
+<p lang="en-US">[self.view? insertSubview:  self.blueViewController.view? atIndex:0];</p>
+<p><span lang="en-US">[self.yellowViewController  viewDidDisppear:YES];?????? </span><span lang="en-US">//</span><span lang="zh-CN">完成交换后在两个视图进行调用</span></p>
+<p lang="en-US">[self.blueViewController?  viewDidAppear:YES];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else</p>
+<p lang="en-US">{</p>
+<p lang="en-US">[UIView?  setAnimationTransition:</p>
+<p lang="en-US">UIViewAnimationTransitionFlipFromLeft</p>
+<p lang="en-US">forView:self.view cache:YES];</p>
+<p lang="en-US">[self.yellowViewController?  viewWillAppear:YES];</p>
+<p lang="en-US">[self.blueViewController?  viewWillDisappear:YES];</p>
+<p lang="en-US">[self.blueViewController.view?  removeFromSuperview];</p>
+<p lang="en-US">[self.view?  insertSubview:self.yellowViewController.view? atIndex:0];</p>
+<p lang="en-US">[self.blueViewController?  viewDidDisappear:YES];</p>
+<p lang="en-US">[self.yellowViewController?  viewDidAppear:YES];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">[UIView? commitAnimations];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="zh-CN">编译后点击</span><span lang="en-US">Switch Views</span><span lang="zh-CN">看效果</span></p>
+<p><span lang="zh-CN">然后精简代码——重构</span><span lang="en-US"> switchViews </span><span lang="zh-CN">方法部分</span></p>
+<p>创建一个需要调用两次的新方法或函数</p>
+<p lang="en-US">-(IBAtion)switchViews:(id)sender</p>
+<p lang="en-US">{</p>
+<p lang="en-US">?if(self.yellowViewController  == nil) {</p>
+<p lang="en-US">YellowViewController?  *yellowController = </p>
+<p lang="en-US">[[YellowViewController? alloc]</p>
+<p lang="en-US">initWithNibName:@&quot;YellowView&quot;</p>
+<p lang="en-US">bundle:nil];</p>
+<p lang="en-US">?self.yellowViewController =  yellowController;</p>
+<p lang="en-US">[yellowController release];</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">[UIView?  beginAnimations:@&quot;View Flip&quot; context:nil];</p>
+<p lang="en-US">[UIView setAnimationDuration:1.25];</p>
+<p lang="en-US">[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">UIViewController *coming = nil;?????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">声明两个指针</span></p>
+<p lang="en-US">UIViewController? *going =  nil;</p>
+<p lang="en-US">UIViewAnimationTransition transition;</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">?if (self.blueViewController.view.superview ==  nil) {?????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">根据当前显示的视图</span></p>
+<p><span lang="en-US">?coming?  = blueViewController;?????????????????????????????????????????? </span><span lang="en-US">//</span><span lang="zh-CN">分配给合适的指针</span></p>
+<p lang="en-US">?going = yellowViewController;</p>
+<p lang="en-US">?transition =  UIViewAnimationTransitionFlipFromLeft;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">?else {</p>
+<p lang="en-US">?coming = yellowController;</p>
+<p lang="en-US">?going = blueViewController;</p>
+<p lang="en-US">?transition =  UIViewAnimationTransitionFlipFromRight;</p>
+<p lang="en-US">}</p>
+<p lang="en-US">&nbsp;</p>
+<p><span lang="en-US">[UIView?  setAnimationTransition: transition fromView:self.view??? </span><span lang="en-US">?//</span><span lang="zh-CN">转换类型</span></p>
+<p><span lang="en-US">cache:YES];????????????????????????????????????????????????????????????????????????????????????? </span><span lang="en-US">?//</span><span lang="zh-CN">开启缓存</span></p>
+<p lang="en-US">[coming viewWillAppear:YES];</p>
+<p lang="en-US">[going viewWillDisappear:YES];</p>
+<p lang="en-US">[self.view? insertSubview:  coming.view atIndex:0];</p>
+<p lang="en-US">[going viewDidDisppear:YES];</p>
+<p lang="en-US">[coming viewDidAppear:YES];</p>
+<p lang="en-US">&nbsp;</p>
+<p lang="en-US">[UIView commitAnimations];</p>
+<p lang="en-US">}</p>
+<p>&nbsp;</p>
+<p align="center"><a href="iPhoneStudy2.html">转第2页</a>   <a href="iPhoneStudy4.html">转第4页</a></p>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<title>碟片查找工具</title>
+<body>
+
+<form action="DiscInfo6.php" method="post">
+	<em>请选择碟片分类:</em>
+<select name ="Class_Name">
+<option value="">全部</option>
+<option value="电影">电影</option>
+<option value="音乐">音乐</option>
+<option value="游戏">游戏</option>
+<option value="漫画">漫画</option>
+<option value="动画">动画</option>
+<option value="书">书</option>
+<option value="剧集">剧集</option>
+<option value="软件">软件</option>
+<option value="美术片">美术片</option>
+<option value="学习">学习</option>
+<option value="模型">模型</option>
+<option value="攻略">攻略</option>
+<option value="AV">AV</option>
+<option value="照片">照片</option>
+<option value="家庭视频录像">家庭视频录像</option>
+</select>
+<input type="submit" value = "ok" />
+</form>
+<hr>
+
+<form action="DiscInfo7.php" method="post">
+<br>请输入查找内容:
+<input type="text" name="Content" />
+<input type="radio" checked="checked" name="AllResult" value="result_all" />显示全部结果
+<input type="radio" name="AllResult" value="result_select" />
+         仅显示<input type="text" name="Limit" size="3" value = "30" />行结果
+<input type="submit" value="确定"/>
+</form>
+
+</body>
+</html>

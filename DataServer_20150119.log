@@ -1,0 +1,14 @@
+2015-01-19 14:01:10,969 [5] INFO  DataServerLog [(null)] - protected override void OnStart(string[] args)
+2015-01-19 14:01:14,911 [5] INFO  DataServerLog [(null)] - DataServerHttp Running.
+2015-01-19 14:01:15,024 [5] INFO  DataServerLog [(null)] - Load hashtable running well.
+2015-01-19 14:01:15,166 [5] INFO  DataServerLog [(null)] - Plug-in Service Running.
+2015-01-19 14:01:15,185 [5] INFO  DataServerLog [(null)] - CardReader Running.
+2015-01-19 14:01:15,213 [9] INFO  DataServerLog [(null)] - kill process named: PrintControl.DataServer
+2015-01-19 14:01:15,215 [9] ERROR DataServerLog [(null)] - Socket Bind Error.
+System.Net.Sockets.SocketException (0x80004005): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+   在 System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   在 System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   在 PrintControl.DataServer.CardReader.RecieveCardNumber()
+2015-01-19 14:01:15,304 [11] INFO  DataServerLog [(null)] - tcp kill process named: PrintControl.DataServer
+2015-01-19 14:01:15,456 [5] INFO  DataServerLog [(null)] - CardReaderTcp Running.
+2015-01-19 14:01:16,173 [11] ERROR DataServerLog [(null)] - tcp Can not kill process. Port is:8600,Process is:PrintControl.DataServer,Error is 拒绝访问。
